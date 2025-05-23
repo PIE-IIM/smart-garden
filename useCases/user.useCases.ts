@@ -13,7 +13,7 @@ export class UserUseCases {
         this.userServices.createUserExemple("toto")
     }
 
-    // Nouvelle méthode pour créer un utilisateur
+    // Méthode pour créer un utilisateur
     async createUser(userData: CreateUserRequest) {
         try {
             this.actions.userActions.setLoadingAction(true);
@@ -21,21 +21,23 @@ export class UserUseCases {
             
             const response = await this.userServices.createUser(userData);
             
-            if (response.status == "Success" && response.payload) {
+            if (response.status === "Success" && response.payload) {
+                const payload = response.payload as any;
                 const newUser: User = {
-                    id: response.payload.id,
-                    name: response.payload.name,
-                    email: response.payload.email
+                    id: payload.id,
+                    name: payload.name,
+                    email: payload.email
                 };
                 
-                this.actions.userActions.addUserAction(newUser);
-                this.actions.userActions.setCurrentUserAction(newUser);
+                this.actions.userActions.setUserAction(newUser);
                 return true;
             } else {
-                this.actions.userActions.setErrorAction(response.message || "Échec de la création de l'utilisateur");
+                const errorMessage = response.payload ? String(response.payload) : "Échec de la création de l'utilisateur";
+                this.actions.userActions.setErrorAction(errorMessage);
                 return false;
             }
         } catch (error) {
+            console.error('Erreur lors de la création de l\'utilisateur:', error);
             this.actions.userActions.setErrorAction("Une erreur est survenue");
             return false;
         } finally {

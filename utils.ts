@@ -14,68 +14,94 @@ export class Http {
     try {
       const response = await fetch(`${this.baseUrl + path}`, {
         method: "POST",
-        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: JSON.stringify(payload ?? {}),
       });
   
       if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
         return {
-          payload: await response.json(),
+          payload: errorData || "Une erreur est survenue",
           status: "Failure",
         };
       }
+      const data = await response.json();
       return {
-        payload: await response.json(),
+        payload: data,
         status: "Success",
       };
-    } catch {
+    } catch (error) {
+      console.error('Erreur HTTP:', error);
       return {
-        payload: null,
+        payload: "Erreur de connexion au serveur",
         status: "Failure",
       };
     }
   }
 
   async get(path: string): Promise<ResAction> {
-    const response = await fetch(`${this.baseUrl + path}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (!response.ok) {
+    try {
+      const response = await fetch(`${this.baseUrl + path}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        return {
+          payload: errorData || "Une erreur est survenue",
+          status: "Failure",
+        };
+      }
+      const data = await response.json();
       return {
-        payload: await response.json(),
+        payload: data,
+        status: "Success",
+      };
+    } catch (error) {
+      console.error('Erreur HTTP:', error);
+      return {
+        payload: "Erreur de connexion au serveur",
         status: "Failure",
       };
     }
-    return {
-      payload: await response.json(),
-      status: "Success",
-    };
   }
 
   async patch(path: string, payload: object | null): Promise<ResAction> {
-    const response = await fetch(`${this.baseUrl + path}`, {
+    try {
+      const response = await fetch(`${this.baseUrl + path}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json"
         },
         body: JSON.stringify(payload ?? {}),
       });
   
       if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
         return {
-          payload: await response.json(),
+          payload: errorData || "Une erreur est survenue",
           status: "Failure",
         };
       }
+      const data = await response.json();
       return {
-        payload: await response.json(),
+        payload: data,
         status: "Success",
       };
+    } catch (error) {
+      console.error('Erreur HTTP:', error);
+      return {
+        payload: "Erreur de connexion au serveur",
+        status: "Failure",
+      };
+    }
   }
 }
