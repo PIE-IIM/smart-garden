@@ -16,8 +16,8 @@ export default function RegisterScreen() {
     const { gatewayUseCase } = useUseCase();
 
     // Sélecteurs pour accéder au state
-    const loading = useAppSelector(state => state.userSliceReducer.loading);
-    const error = useAppSelector(state => state.userSliceReducer.error);
+    const loading = useAppSelector(state => state.user.loading);
+    const error = useAppSelector(state => state.user.error);
 
     const validateForm = (): boolean => {
         if (!name || !email || !password || !confirmPassword) {
