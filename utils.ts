@@ -8,7 +8,7 @@ export type ResAction = {
 };
 
 export class Http {
-  constructor(private baseUrl: string = "http://127.0.0.1:8000/") {}
+  constructor(private baseUrl: string = "http://localhost:3000") {}
 
   async post(path: string, payload?: object | null): Promise<ResAction> {
     try {
@@ -60,7 +60,7 @@ export class Http {
 
   async patch(path: string, payload: object | null): Promise<ResAction> {
     const response = await fetch(`${this.baseUrl + path}`, {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
