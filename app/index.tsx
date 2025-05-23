@@ -1,5 +1,46 @@
-
+// app/index.tsx (mise à jour)
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { router } from 'expo-router';
 
 export default function Index() {
-  return <></>;
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Smart Garden</Text>
+      
+      <TouchableOpacity 
+        style={styles.button}
+        onPress={() => router.push('/register')}
+      >
+        <Text style={styles.buttonText}>Créer un compte</Text>
+      </TouchableOpacity>
+      
+      {/* Autres éléments de votre page d'accueil */}
+    </View>
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
