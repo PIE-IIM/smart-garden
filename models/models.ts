@@ -1,4 +1,20 @@
-//Here we define all the type of the app
+// models/models.ts
+
 export type User = {
-    name: string
+    id: string;
+    name: string;
+    email: string;
+    password?: string; // optionnel selon les usages
+}
+
+export type CreateUserRequest = {
+    name: string;
+    email: string;
+    password: string;
+}
+
+export type CreateUserResponse = {
+    id: string;
+    name: string;
+    email: string;
 }
