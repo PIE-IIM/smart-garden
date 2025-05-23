@@ -1,6 +1,5 @@
 // store/actions/userActions.ts
-import { addUser, setCurrentUser, setError, setLoading } from "../reducers/userSlice";
-import { useAppDispatch } from "../hooks";
+import { setUser, setError, setLoading, updateUser, clearUser } from "../reducers/userSlice";
 import { AppDispatch } from "../store";
 import { User } from "@/models/models";
 
@@ -17,11 +16,15 @@ export class UserActions {
         this.dispatch(setError(error));
     }
 
-    public addUserAction(user: User) {
-        this.dispatch(addUser(user));
+    public setUserAction(user: User | null) {
+        this.dispatch(setUser(user));
     }
 
-    public setCurrentUserAction(user: User | null) {
-        this.dispatch(setCurrentUser(user));
+    public updateUserAction(userData: Partial<User>) {
+        this.dispatch(updateUser(userData));
+    }
+
+    public clearUserAction() {
+        this.dispatch(clearUser());
     }
 }

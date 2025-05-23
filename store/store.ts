@@ -5,8 +5,8 @@ import { userSliceReducer } from './reducers/userSlice'
 export const makeStore = () => {
   return configureStore({
     reducer: {
-      counterSliceReducer: counterSliceReducer,
-      userSliceReducer: userSliceReducer
+      counter: counterSliceReducer,
+      user: userSliceReducer
     }
   })
 }
