@@ -1,6 +1,7 @@
 // app/index.tsx (mise à jour)
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { router } from 'expo-router';
+import { Navbar } from '@/components/navbar/navbar';
 
 export default function Index() {
   return (
@@ -9,12 +10,9 @@ export default function Index() {
       
       <TouchableOpacity 
         style={styles.button}
-        onPress={() => router.push('/register')}
-      >
+        onPress={() => router.push('/register')}>
         <Text style={styles.buttonText}>Créer un compte</Text>
       </TouchableOpacity>
-      
-      {/* Autres éléments de votre page d'accueil */}
     </View>
   );
 }

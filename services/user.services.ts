@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 export class UserServices {
   constructor(private http: Http) {}
 
-  async createUser(userData: CreateUserRequest): Promise<ResAction<CreateUserResponse>> {
+  async createUser(userData: CreateUserRequest): Promise<ResAction> {
     // Hash du mot de passe avant l'envoi
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(userData.password, salt);
