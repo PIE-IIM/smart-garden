@@ -18,3 +18,14 @@ export type CreateUserResponse = {
     name: string;
     email: string;
 }
+
+export type Vegetable = {
+    name: string;
+    description: string;
+    caracteristiques: string[];
+    semis: string[];
+    plantation: string[];
+    recolte: string[];
+    affinites: string[];
+    mauvais_voisins: string[];
+}[]
