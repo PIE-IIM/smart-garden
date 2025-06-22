@@ -1,6 +1,5 @@
-// app/index.tsx (mise à jour)
 import { Planning } from "@/components/planning/planning";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
 import { vegetablesFixture } from "@/vegetables";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
 import { useState } from "react";
@@ -9,21 +8,23 @@ export default function Garden() {
 
   const [currentSection, setCurrentSection] = useState<string>('calendrier');
 
-
-
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>Mon jardin</Text>
-        <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
-        {currentSection === 'calendrier' && (
-          <>
-            <Planning vegetablesOnPlanning={vegetablesFixture} />
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.addVegetableText}>Ajouter une plante</Text>
-            </TouchableOpacity>
-          </>
-        )}
+        <View style={styles.header}>
+          <Text style={styles.title}>Mon jardin</Text>
+          <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
+        </View>
+        <ScrollView>
+          {currentSection === 'calendrier' && (
+            <>
+              <Planning vegetablesOnPlanning={vegetablesFixture} />
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.addVegetableText}>Ajouter une plante</Text>
+              </TouchableOpacity>
+            </>
+          )}
+        </ScrollView>
       </View>
     </>
   );
@@ -35,6 +36,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFDF0",
     paddingTop: "15%"
+  },
+  header: {
+    paddingBottom: 16
   },
   title: {
     fontSize: 22,
@@ -49,9 +53,11 @@ const styles = StyleSheet.create({
     paddingBottom: 16,
     color: "#345624",
     borderWidth: 1,
-    position: "absolute",
-    bottom: 28,
     borderRadius: 8,
+    marginTop: 50,
+    marginBottom: 50,
+    marginLeft: "auto",
+    marginRight: "auto"
   },
   addVegetableText: {
     fontSize: 18,
