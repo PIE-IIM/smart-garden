@@ -1,13 +1,13 @@
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
 import { useEffect, useState } from "react";
 import { Vegetable } from "@/models/models";
 
 type PlanningProps = {
-  vegetablesOnPlanning: Vegetable;
+  vegetablesOnPlanning: Vegetable[];
 };
 
 export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
-  const [vegetables, setVegetables] = useState<Vegetable>();
+  const [vegetables, setVegetables] = useState<Vegetable[]>();
 
   const months = [
     "Janvier",
@@ -25,8 +25,24 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
   ];
 
   useEffect(() => {
-    setVegetables(vegetablesOnPlanning)
-  },[vegetablesOnPlanning])
+    setVegetables(vegetablesOnPlanning);
+  }, [vegetablesOnPlanning]);
+
+  function giveTheCorrectWithAndPositionSowing(properties: string[]) {
+    const lowerMonths = months.map(el => el.toLowerCase());
+    const startMonth = lowerMonths.findIndex(element => element === properties[0])
+    const lastMonth = lowerMonths.findIndex(element => element === properties[properties.length - 1])
+
+    const multipleWidth = 50;
+    const multiplePosition = 110;
+    const width = 80 + (lastMonth * multipleWidth);
+    const left = 10 + (startMonth * multiplePosition)
+
+    return {
+      width,
+      left
+    }
+  }
 
   return (
     <>
@@ -36,6 +52,7 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
           showsHorizontalScrollIndicator={true}
         >
           <View style={styles.monthLabelContainer}>
+            <View style={styles.space} />
             {months.map((month) => (
               <Text style={styles.monthLabel} key={month}>
                 {month}
@@ -43,10 +60,31 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
             ))}
           </View>
           <View style={styles.vegetablesContainer}>
-            {vegetables?.map((vegetable) => (
-              <View style={styles.vegetableElement}>
-                <View style={styles.vegetableLabel}>
-                  <Text>{vegetable.name}</Text>
+            {vegetables?.map((vegetable, index) => (
+              <View key={index} style={styles.vegetableElement}>
+                <View style={styles.vegetableLabelContainer}>
+                  <Text style={styles.marginAuto}>{vegetable.name}</Text>
+                </View>
+                <View style={styles.planningContainer}>
+                  {vegetable.semis.length > 0 && (
+                    <View style={[styles.sowing, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.semis)]}>
+                      <Text style={styles.marginAuto}>Semis</Text>
+                    </View>
+                  )}
+                  {vegetable.plantation.length > 0 && (
+                    <>
+                      <View style={[styles.plantation, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.plantation)]}>
+                        <Text style={styles.marginAuto}>Plantation</Text>
+                      </View>
+                    </>
+                  )}
+                  {vegetable.recolte.length > 0 && (
+                    <>
+                      <View style={[styles.harvest, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.recolte)]}>
+                        <Text style={styles.marginAuto}>Récolte</Text>
+                      </View>
+                    </>
+                  )}
                 </View>
               </View>
             ))}
@@ -59,16 +97,23 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: "100%",
+    width: "auto",
     display: "flex",
     flexDirection: "row",
   },
   monthLabelContainer: {
+    width: "auto",
     display: "flex",
     flexDirection: "row",
-    gap: 16,
+    gap: 64,
     paddingTop: 50,
     paddingBottom: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    marginBottom: 8,
+  },
+  space: {
+    width: 40,
   },
   scrollContainer: {
     height: "auto",
@@ -77,7 +122,7 @@ const styles = StyleSheet.create({
   },
   monthLabel: {
     fontSize: 14,
-    transform: [{ rotate: "-35deg" }],
+    transform: [{ rotate: "-25deg" }],
     textAlign: "left",
   },
   vegetablesContainer: {
@@ -88,16 +133,45 @@ const styles = StyleSheet.create({
   },
   vegetableElement: {
     width: "100%",
-    height: 100,
+    height: 110,
     borderBottomColor: "#E2E2E2",
     borderBottomWidth: 1,
+    display: "flex",
+    flexDirection: "row",
   },
-  vegetableLabel: {
-    width: "15%",
+  vegetableLabelContainer: {
+    width: 100,
+    position: "fixed",
+    left: 0,
+    top: 0,
     height: "100%",
     backgroundColor: "FFFDF0",
     borderRightColor: "#E2E2E2",
     borderRightWidth: 1,
     boxShadow: "6px 0px 33px -13px rgba(52, 52, 57, 0.18)",
+  },
+  marginAuto: {
+    margin: "auto",
+  },
+  planningContainer: {
+    padding: 8,
+    gap: 4,
+    marginTop: "auto",
+    marginBottom: "auto"
+  },
+  planningItem: {
+    position: "relative",
+    height: 28,
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  sowing: {
+    backgroundColor: "#E7C2A0",
+  },
+  plantation: {
+    backgroundColor: "#EBECD2",
+  },
+  harvest: {
+    backgroundColor: "#E7BDBB",
   },
 });
