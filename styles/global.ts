@@ -6,6 +6,10 @@ const globalStyle = StyleSheet.create({
   },
   blackText: {
     color: 'black'
+  },
+
+  background: {
+    backgroundColor: '#FFFDF0',
   }
 });
 
