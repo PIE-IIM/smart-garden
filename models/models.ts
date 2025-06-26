@@ -22,10 +22,10 @@ export type CreateUserResponse = {
 export type Vegetable = {
   name: string;
   description: string;
-  caracteristiques: string[];
-  semis: string[];
+  specifications: string[];
+  sowing: string[];
   plantation: string[];
-  recolte: string[];
-  affinites: string[];
-  mauvais_voisins: string[];
+  harvest: string[];
+  affinity: string[];
+  bad_neighbors: string[];
 };

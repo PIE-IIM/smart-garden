@@ -5,44 +5,44 @@ export const vegetablesFixture: Vegetable[] = [
     name: 'Tomate',
     description:
       'Plante fruitière très populaire, nécessite beaucoup de lumière et de chaleur.',
-    caracteristiques: [
+    specifications: [
       'Besoin ensoleillement élevé',
       'Sensible au mildiou',
       'Croissance verticale',
     ],
-    semis: ['février', 'mars', 'avril'],
+    sowing: ['février', 'mars', 'avril'],
     plantation: ['avril', 'mai', 'juin'],
-    recolte: ['juillet', 'août', 'septembre', 'octobre'],
-    affinites: ['Basilic', 'Carotte', 'Oignon'],
-    mauvais_voisins: ['Pomme de terre', 'Fenouil'],
+    harvest: ['juillet', 'août', 'septembre', 'octobre'],
+    affinity: ['Basilic', 'Carotte', 'Oignon'],
+    bad_neighbors: ['Pomme de terre', 'Fenouil'],
   },
   {
     name: 'Basilic',
     description:
       "Herbe aromatique facile à cultiver, aime la chaleur et l'humidité.",
-    caracteristiques: [
+    specifications: [
       'Aime la chaleur',
       'Pousse rapide',
       'Aromatique puissante',
     ],
-    semis: ['mars', 'avril', 'mai'],
+    sowing: ['mars', 'avril', 'mai'],
     plantation: ['mai', 'juin'],
-    recolte: ['juin', 'juillet', 'août', 'septembre'],
-    affinites: ['Tomate', 'Poivron', 'Aubergine'],
-    mauvais_voisins: ['Rue officinale'],
+    harvest: ['juin', 'juillet', 'août', 'septembre'],
+    affinity: ['Tomate', 'Poivron', 'Aubergine'],
+    bad_neighbors: ['Rue officinale'],
   },
   {
     name: 'Persil',
     description:
       'Herbe aromatique résistante, pousse bien en intérieur ou extérieur.',
-    caracteristiques: [
+    specifications: [
       'Pousse lente',
       'Résistant au froid',
       'Aromatique universel',
     ],
-    semis: ['février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août'],
+    sowing: ['février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août'],
     plantation: ['avril', 'mai', 'juin', 'juillet', 'août', 'septembre'],
-    recolte: [
+    harvest: [
       'mai',
       'juin',
       'juillet',
@@ -51,18 +51,18 @@ export const vegetablesFixture: Vegetable[] = [
       'octobre',
       'novembre',
     ],
-    affinites: ['Tomate', 'Carotte', 'Ciboulette'],
-    mauvais_voisins: ['Laitue', 'Menthe'],
+    affinity: ['Tomate', 'Carotte', 'Ciboulette'],
+    bad_neighbors: ['Laitue', 'Menthe'],
   },
   {
     name: 'Laitue',
     description: 'Légume-feuille rapide, aime les zones fraîches et ombragées.',
-    caracteristiques: [
+    specifications: [
       'Croissance rapide',
       'Sensible à la chaleur',
       'Feuillage tendre',
     ],
-    semis: [
+    sowing: [
       'février',
       'mars',
       'avril',
@@ -83,7 +83,7 @@ export const vegetablesFixture: Vegetable[] = [
       'septembre',
       'octobre',
     ],
-    recolte: [
+    harvest: [
       'avril',
       'mai',
       'juin',
@@ -93,16 +93,16 @@ export const vegetablesFixture: Vegetable[] = [
       'octobre',
       'novembre',
     ],
-    affinites: ['Radis', 'Carotte', 'Fraise'],
-    mauvais_voisins: ['Persil'],
+    affinity: ['Radis', 'Carotte', 'Fraise'],
+    bad_neighbors: ['Persil'],
   },
   {
     name: 'Ciboulette',
     description: 'Plante vivace au goût fin, idéale en pot ou pleine terre.',
-    caracteristiques: ['Vivace', 'Aime la mi-ombre', 'Anti-insectes'],
-    semis: ['mars', 'avril', 'mai'],
+    specifications: ['Vivace', 'Aime la mi-ombre', 'Anti-insectes'],
+    sowing: ['mars', 'avril', 'mai'],
     plantation: ['avril', 'mai', 'juin'],
-    recolte: [
+    harvest: [
       'avril',
       'mai',
       'juin',
@@ -111,17 +111,17 @@ export const vegetablesFixture: Vegetable[] = [
       'septembre',
       'octobre',
     ],
-    affinites: ['Carotte', 'Persil', 'Pommier'],
-    mauvais_voisins: ['Haricot'],
+    affinity: ['Carotte', 'Persil', 'Pommier'],
+    bad_neighbors: ['Haricot'],
   },
   {
     name: 'Menthe',
     description: 'Aromatique vigoureuse, à cultiver de préférence en pot.',
-    caracteristiques: ['Invasive', 'Vivace', 'Rafraîchissante'],
-    semis: ['mars', 'avril', 'mai'],
+    specifications: ['Invasive', 'Vivace', 'Rafraîchissante'],
+    sowing: ['mars', 'avril', 'mai'],
     plantation: ['avril', 'mai', 'juin'],
-    recolte: ['mai', 'juin', 'juillet', 'août', 'septembre', 'octobre'],
-    affinites: ['Chou', 'Pois', 'Radis'],
-    mauvais_voisins: ['Persil', 'Camomille'],
+    harvest: ['mai', 'juin', 'juillet', 'août', 'septembre', 'octobre'],
+    affinity: ['Chou', 'Pois', 'Radis'],
+    bad_neighbors: ['Persil', 'Camomille'],
   },
 ];
