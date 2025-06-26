@@ -66,8 +66,8 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
                   <Text style={styles.marginAuto}>{vegetable.name}</Text>
                 </View>
                 <View style={styles.planningContainer}>
-                  {vegetable.semis.length > 0 && (
-                    <View style={[styles.sowing, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.semis)]}>
+                  {vegetable.sowing.length > 0 && (
+                    <View style={[styles.sowing, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.sowing)]}>
                       <Text style={styles.marginAuto}>Semis</Text>
                     </View>
                   )}
@@ -78,9 +78,9 @@ export const Planning = ({ vegetablesOnPlanning }: PlanningProps) => {
                       </View>
                     </>
                   )}
-                  {vegetable.recolte.length > 0 && (
+                  {vegetable.harvest.length > 0 && (
                     <>
-                      <View style={[styles.harvest, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.recolte)]}>
+                      <View style={[styles.harvest, styles.planningItem, giveTheCorrectWithAndPositionSowing(vegetable.harvest)]}>
                         <Text style={styles.marginAuto}>Récolte</Text>
                       </View>
                     </>
