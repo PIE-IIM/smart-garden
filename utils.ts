@@ -20,7 +20,6 @@ export class Http {
 
   async post(path: string, payload?: object | null): Promise<ResAction> {
     try {
-      console.log(this.baseUrl);
       const response = await fetch(`${this.baseUrl + path}`, {
         method: 'POST',
         credentials: 'include',

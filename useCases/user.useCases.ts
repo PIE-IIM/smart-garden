@@ -1,6 +1,10 @@
-import { UserServices } from '@/services/user.services';
+import {
+  CreateUserPayload,
+  LoginUserPayload,
+  UserServices,
+} from '@/services/user.services';
 import { Actions } from '@/store/actions/actions';
-import { CreateUserRequest, Token, User } from '@/models/models';
+import { Token } from '@/models/models';
 import { Failure, Success } from '@/utils';
 
 //Here we call the services and the actions from the store
@@ -10,29 +14,51 @@ export class UserUseCases {
     private userServices: UserServices
   ) {}
 
-  async createUser(userData: CreateUserRequest): Promise<Success | Failure> {
-    this.actions.userActions.setLoadingAction(true);
-    this.actions.userActions.setErrorAction(null);
-
+  async createUser(userData: CreateUserPayload): Promise<Success | Failure> {
     const response = await this.userServices.createUser(userData);
-
     if (response.status === 'Failure') {
       return response.status;
     }
-
     const payload = response.payload as unknown as Token;
     this.actions.storageActions.putToken('authToken', payload.token);
-
-    // this.actions.userActions.addUserAction(newUser);
-    // this.actions.userActions.setCurrentUserAction(newUser);
+    this.actions.userActions.setLoginAction(true);
     return response.status;
   }
 
-  async userIsConnected(): Promise<boolean> {
+  async login(userData: LoginUserPayload): Promise<Success | Failure> {
+    const response = await this.userServices.login(userData);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    const payload = response.payload as unknown as Token;
+
+    //check if the user's token already exists, if so, delete it
+    const isTokenAlreadyExists =
+      await this.actions.storageActions.getToken('authToken');
+    if (isTokenAlreadyExists === null) {
+      this.actions.storageActions.deleteToken('authToken');
+    }
+    await this.actions.storageActions.putToken('authToken', payload.token);
+    this.actions.userActions.setLoginAction(true);
+    return response.status;
+  }
+
+  async logout(): Promise<Success> {
+    await this.actions.storageActions.deleteToken('authToken');
+    this.actions.userActions.setLoginAction(false);
+
+    return 'Success';
+  }
+
+  async userHasToken(): Promise<boolean> {
     const token = await this.actions.storageActions.getToken('authToken');
     if (token === null) {
       return false;
     }
     return true;
+  }
+
+  isLogin(): boolean {
+    return this.actions.userActions.userIsLogin();
   }
 }
