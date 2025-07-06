@@ -4,30 +4,23 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
 import { Failure, Success } from '@/utils';
-import { CreateUserPayload } from '@/services/user.services';
+import { CreateUserPayload, LoginUserPayload } from '@/services/user.services';
 
 export default function RegisterScreen() {
-    const [name, setName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-    const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<string | null>(null)
+    const [loading, setLoading] = useState<boolean>(false)
 
     const { gatewayUseCase } = useUseCase();
 
     const validateForm = (): boolean => {
         setError(null);
-        if (!name || !email || !password || !confirmPassword) {
+        if (!email || !password) {
             setError('Tous les champs sont obligatoires');
             return false;
         }
-        if (password !== confirmPassword) {
-            setError('Les mots de passe ne correspondent pas');
-            return false;
-        }
-
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
             setError('Format d\'email invalide');
@@ -39,16 +32,14 @@ export default function RegisterScreen() {
     const handleRegister = async () => {
         setLoading(true)
         if (!validateForm()) return setLoading(false);
-        const userData: CreateUserPayload = {
-            name,
+        const userData: LoginUserPayload = {
             email,
             password
         };
-        const response: Success | Failure = await gatewayUseCase.userUseCases.createUser(userData);
-
+        const response: Success | Failure = await gatewayUseCase.userUseCases.login(userData);
         if (response === "Failure") {
-            setError('Impossible de créer un compte');
-            return setLoading(false);
+            setError('Impossible de se connecter');
+            return setLoading(false)
         }
         setLoading(false)
         return router.replace('/');
@@ -56,16 +47,11 @@ export default function RegisterScreen() {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>Créer un compte</Text>
+            <Text style={styles.title}>Connexion</Text>
 
             {(error) && (
                 <Text style={styles.errorText}>{error}</Text>
             )}
-
-            <TextInput style={styles.input}
-                placeholder="Nom"
-                value={name}
-                onChangeText={setName} />
 
             <TextInput
                 style={styles.input}
@@ -82,12 +68,6 @@ export default function RegisterScreen() {
                 onChangeText={setPassword}
                 secureTextEntry />
 
-            <TextInput
-                style={styles.input}
-                placeholder="Confirmer le mot de passe"
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry />
 
             <TouchableOpacity
                 style={styles.button}
@@ -96,14 +76,14 @@ export default function RegisterScreen() {
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
-                    <Text style={styles.buttonText}>S'inscrire</Text>
+                    <Text style={styles.buttonText}>Se connecter</Text>
                 )}
             </TouchableOpacity>
 
             <TouchableOpacity
                 style={styles.linkButton}
-                onPress={() => router.replace('/login')}>
-                <Text style={styles.linkText}>Retour</Text>
+                onPress={() => router.replace('/register')}>
+                <Text style={styles.linkText}>Se créer un compte</Text>
             </TouchableOpacity>
         </View>
     );
@@ -147,12 +127,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     linkText: {
-        color: '#4CAF50',
         fontSize: 16,
     },
     errorText: {
         color: 'red',
         marginBottom: 15,
         textAlign: 'center',
-    }
+    },
 });

@@ -1,27 +1,21 @@
 // store/actions/userActions.ts
-import { addUser, setCurrentUser, setError, setLoading } from "../reducers/userSlice";
-import { useAppDispatch } from "../hooks";
-import { AppDispatch } from "../store";
-import { User } from "@/models/models";
+import { useAppSelector } from '../hooks';
+import { setLogin, UserState } from '../reducers/userSlice';
+import { AppDispatch } from '../store';
 
 export class UserActions {
-    constructor(
-        private dispatch: AppDispatch
-    ) {}
-
-    public setLoadingAction(loading: boolean) {
-        this.dispatch(setLoading(loading));
+  constructor(
+    private dispatch: AppDispatch,
+    private selector: {
+      userSliceReducer: UserState;
     }
+  ) {}
 
-    public setErrorAction(error: string | null) {
-        this.dispatch(setError(error));
-    }
+  public setLoginAction(response: boolean) {
+    this.dispatch(setLogin(response));
+  }
 
-    public addUserAction(user: User) {
-        this.dispatch(addUser(user));
-    }
-
-    public setCurrentUserAction(user: User | null) {
-        this.dispatch(setCurrentUser(user));
-    }
+  public userIsLogin(): boolean {
+    return this.selector.userSliceReducer.isLogin;
+  }
 }

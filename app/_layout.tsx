@@ -8,9 +8,10 @@ import { StorageActions } from "@/store/actions/storageActions";
 
 export default function RootLayout() {
 
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const router = useRouter();
   const storageActions = new StorageActions
+
   const userIsConnected: () => Promise<void> = async () => {
     const token = await storageActions.getToken('authToken'); //I don't call usecase architecture because layout is not wrap by Provider
     if (token === null) {

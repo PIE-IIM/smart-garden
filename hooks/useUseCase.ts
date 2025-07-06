@@ -7,8 +7,9 @@ import { Http } from '@/utils';
 
 const useUseCase = () => {
   const dispatch = useAppDispatch();
+  const selector = useAppSelector((state) => state);
   const http = new Http();
-  const actions = new Actions(dispatch);
+  const actions = new Actions(dispatch, selector);
 
   const userServices = new UserServices(http);
 
