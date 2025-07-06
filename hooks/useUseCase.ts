@@ -1,0 +1,22 @@
+import { UserServices } from '@/services/user.services';
+import { Actions } from '@/store/actions/actions';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { GatewayUseCases } from '@/useCases/gateway.useCases';
+import { UserUseCases } from '@/useCases/user.useCases';
+import { Http } from '@/utils';
+
+const useUseCase = () => {
+  const dispatch = useAppDispatch();
+  const http = new Http();
+  const actions = new Actions(dispatch);
+
+  const userServices = new UserServices(http);
+
+  const userUseCases = new UserUseCases(actions, userServices);
+
+  const gatewayUseCase = new GatewayUseCases(userUseCases);
+
+  return { gatewayUseCase };
+};
+
+export default useUseCase;

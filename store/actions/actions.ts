@@ -1,12 +1,14 @@
-import { useDispatch } from "react-redux";
-import { increment } from "../reducers/exempleSlice";
-import { Dispatch, UnknownAction } from "@reduxjs/toolkit";
-import { useAppDispatch } from "../hooks";
+import { AppDispatch } from '../store';
+import { UserActions } from './userActions';
+import { StorageActions } from './storageActions';
 
+//Here we interact only with the store
 export class Actions {
-    dispatch = useAppDispatch();
+  public userActions: UserActions;
+  public storageActions: StorageActions;
 
-    public incrementAction() {
-        this.dispatch(increment({ value: 1 }));
-    }
+  constructor(private dispatch: AppDispatch) {
+    this.userActions = new UserActions(dispatch);
+    this.storageActions = new StorageActions();
+  }
 }

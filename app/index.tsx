@@ -1,30 +1,45 @@
-import { useAppSelector, useAppStore } from "@/store/hooks";
-import { useRef } from "react";
-import { Button, ColorValue, Text, View } from "react-native";
-import { Actions } from "@/store/actions/actions";
-import { counterValue } from "@/store/selector/counterSelector";
-import globalStyle from "@/styles/global";
+// app/index.tsx (mise à jour)
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import useUseCase from '@/hooks/useUseCase';
 
 export default function Index() {
 
-  const value = useAppSelector(counterValue);
-  const actionsRef = useRef(new Actions());
-
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Button
-        onPress={() => actionsRef.current.incrementAction()}
-        title="Learn More"
-        color={"black"}
-        accessibilityLabel="Learn more about this purple button"
-      />
-      <Text>{value}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Smart Garden</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => console.log('hello')}>
+        <Text style={styles.buttonText}>Créer un compte</Text>
+      </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    marginBottom: 30,
+  },
+  button: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 8,
+    marginVertical: 10,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});
