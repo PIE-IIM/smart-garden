@@ -4,76 +4,68 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
 import { CreateUserRequest } from '@/models/models';
-import { useAppSelector } from '@/store/hooks';
+import { Failure, Success } from '@/utils';
 
 export default function RegisterScreen() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [formError, setFormError] = useState<string | null>(null);
+    const [name, setName] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+
+    const [loading, setLoading] = useState<boolean>(false)
+    const [error, setError] = useState<string | null>(null)
 
     const { gatewayUseCase } = useUseCase();
 
-    // Sélecteurs pour accéder au state
-    const loading = useAppSelector(state => state.userSliceReducer.loading);
-    const error = useAppSelector(state => state.userSliceReducer.error);
-
     const validateForm = (): boolean => {
+        setError(null);
         if (!name || !email || !password || !confirmPassword) {
-            setFormError('Tous les champs sont obligatoires');
+            setError('Tous les champs sont obligatoires');
             return false;
         }
-
         if (password !== confirmPassword) {
-            setFormError('Les mots de passe ne correspondent pas');
+            setError('Les mots de passe ne correspondent pas');
             return false;
         }
 
-        // Validation basique de l'email
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-            setFormError('Format d\'email invalide');
+            setError('Format d\'email invalide');
             return false;
         }
-
-        setFormError(null);
         return true;
     };
 
     const handleRegister = async () => {
-        if (!validateForm()) return;
-
+        setLoading(true)
+        if (!validateForm()) return setLoading(false);
         const userData: CreateUserRequest = {
             name,
             email,
             password
         };
+        const response: Success | Failure = await gatewayUseCase.userUseCases.createUser(userData);
 
-        console.log(userData);
-
-        const success = await gatewayUseCase.userUseCases.createUser(userData);
-
-        if (success) {
-            // Redirection vers la page d'accueil ou de profil
-            router.replace('/');
+        if (response === "Failure") {
+            setError('Impossible de créer un compte');
+            return setLoading(false);
         }
+        setLoading(false)
+        return router.replace('/');
     };
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Créer un compte</Text>
 
-            {(formError || error) && (
-                <Text style={styles.errorText}>{formError || error}</Text>
+            {(error) && (
+                <Text style={styles.errorText}>{error}</Text>
             )}
 
-            <TextInput
-                style={styles.input}
+            <TextInput style={styles.input}
                 placeholder="Nom"
                 value={name}
-                onChangeText={setName}
-            />
+                onChangeText={setName} />
 
             <TextInput
                 style={styles.input}
@@ -81,30 +73,26 @@ export default function RegisterScreen() {
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
-                autoCapitalize="none"
-            />
+                autoCapitalize="none" />
 
             <TextInput
                 style={styles.input}
                 placeholder="Mot de passe"
                 value={password}
                 onChangeText={setPassword}
-                secureTextEntry
-            />
+                secureTextEntry />
 
             <TextInput
                 style={styles.input}
                 placeholder="Confirmer le mot de passe"
                 value={confirmPassword}
                 onChangeText={setConfirmPassword}
-                secureTextEntry
-            />
+                secureTextEntry />
 
             <TouchableOpacity
                 style={styles.button}
                 onPress={handleRegister}
-                disabled={loading}
-            >
+                disabled={loading} >
                 {loading ? (
                     <ActivityIndicator color="#fff" />
                 ) : (
@@ -114,8 +102,7 @@ export default function RegisterScreen() {
 
             <TouchableOpacity
                 style={styles.linkButton}
-                onPress={() => router.back()}
-            >
+                onPress={() => router.back()}>
                 <Text style={styles.linkText}>Retour</Text>
             </TouchableOpacity>
         </View>

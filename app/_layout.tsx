@@ -1,23 +1,47 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import StoreProvider from "./StoreProvider";
 import { Navbar } from "@/components/navbar/navbar";
-import * as SystemUI from "expo-system-ui";
 import * as NavigationBar from "expo-navigation-bar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useUseCase from "@/hooks/useUseCase";
+import { StorageActions } from "@/store/actions/storageActions";
 
 export default function RootLayout() {
+
+  const [isMounted, setIsMounted] = useState(false);
+  const router = useRouter();
+  const storageActions = new StorageActions
+  const userIsConnected: () => Promise<void> = async () => {
+    const token = await storageActions.getToken('authToken'); //I don't call usecase architecture because layout is not wrap by Provider
+    if (token === null) {
+      router.replace('/login');
+    }
+  };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      userIsConnected()
+    }
+  }, [isMounted])
+
   useEffect(() => {
     NavigationBar.setVisibilityAsync("hidden");
   }, []);
   return (
     <StoreProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="search" />
-        <Stack.Screen name="garden" />
-        <Stack.Screen name="profile" />
-      </Stack>
-      <Navbar />
+      <>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="search" />
+          <Stack.Screen name="garden" />
+          <Stack.Screen name="profile" />
+        </Stack>
+        <Navbar />
+      </>
     </StoreProvider>
   );
 }
