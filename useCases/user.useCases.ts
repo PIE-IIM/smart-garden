@@ -1,53 +1,38 @@
-import { UserServices } from "@/services/user.services";
-import { Actions } from "@/store/actions/actions";
-import { CreateUserRequest, User } from "@/models/models";
+import { UserServices } from '@/services/user.services';
+import { Actions } from '@/store/actions/actions';
+import { CreateUserRequest, Token, User } from '@/models/models';
+import { Failure, Success } from '@/utils';
 
 //Here we call the services and the actions from the store
 export class UserUseCases {
-    constructor(
-        private actions: Actions,
-        private userServices: UserServices
-    ) {}
+  constructor(
+    private actions: Actions,
+    private userServices: UserServices
+  ) {}
 
-    createUserExemple(){
-        this.userServices.createUserExemple("toto")
+  async createUser(userData: CreateUserRequest): Promise<Success | Failure> {
+    this.actions.userActions.setLoadingAction(true);
+    this.actions.userActions.setErrorAction(null);
+
+    const response = await this.userServices.createUser(userData);
+
+    if (response.status === 'Failure') {
+      return response.status;
     }
 
-    // Nouvelle méthode pour créer un utilisateur
-    async createUser(userData: CreateUserRequest) {
-        try {
-            this.actions.userActions.setLoadingAction(true);
-            this.actions.userActions.setErrorAction(null);
-            
-            const response = await this.userServices.createUser(userData);
-            
-            if (response.status == "Success" && response.payload) {
-                const newUser: User = {
-                    id: response.payload.id,
-                    name: response.payload.name,
-                    email: response.payload.email
-                };
-                
-                this.actions.userActions.addUserAction(newUser);
-                this.actions.userActions.setCurrentUserAction(newUser);
-                return true;
-            } else {
-                this.actions.userActions.setErrorAction(response.message || "Échec de la création de l'utilisateur");
-                return false;
-            }
-        } catch (error) {
-            this.actions.userActions.setErrorAction("Une erreur est survenue");
-            return false;
-        } finally {
-            this.actions.userActions.setLoadingAction(false);
-        }
-    }
+    const payload = response.payload as unknown as Token;
+    this.actions.storageActions.putToken('authToken', payload.token);
 
-    increment(){
-        this.actions.incrementAction()
-    }
+    // this.actions.userActions.addUserAction(newUser);
+    // this.actions.userActions.setCurrentUserAction(newUser);
+    return response.status;
+  }
 
-    getNumber() {
-        this.actions.getNumber();
+  async userIsConnected(): Promise<boolean> {
+    const token = await this.actions.storageActions.getToken('authToken');
+    if (token === null) {
+      return false;
     }
+    return true;
+  }
 }

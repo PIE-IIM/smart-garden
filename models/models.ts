@@ -29,3 +29,7 @@ export type Vegetable = {
   affinity: string[];
   bad_neighbors: string[];
 };
+
+export type Token = {
+  token: string;
+};

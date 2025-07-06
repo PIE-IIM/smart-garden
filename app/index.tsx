@@ -1,16 +1,17 @@
 // app/index.tsx (mise à jour)
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { router } from 'expo-router';
-import { Navbar } from '@/components/navbar/navbar';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'expo-router';
+import useUseCase from '@/hooks/useUseCase';
 
 export default function Index() {
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Smart Garden</Text>
-      
-      <TouchableOpacity 
+      <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push('/register')}>
+        onPress={() => console.log('hello')}>
         <Text style={styles.buttonText}>Créer un compte</Text>
       </TouchableOpacity>
     </View>
