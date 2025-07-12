@@ -9,7 +9,9 @@ import useUseCase from '@/hooks/useUseCase';
 
 export const Navbar = () => {
   const [iconSelected, setIconSelected] = useState<string>('home');
-  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+
   const { gatewayUseCase } = useUseCase();
 
   const iconPath: Record<string, string> = {
@@ -28,14 +30,24 @@ export const Navbar = () => {
   };
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
     setIconSelected('home')
-    if (gatewayUseCase.userUseCases.isLogin()) {
+    if (gatewayUseCase.userUseCases.isLogin && isMounted) {
       setIsLogin(true)
     }
-    if (!gatewayUseCase.userUseCases.isLogin()) {
+    if (!gatewayUseCase.userUseCases.isLogin && isMounted) {
       setIsLogin(false)
     }
-  }, [gatewayUseCase.userUseCases.isLogin()])
+  }, [gatewayUseCase.userUseCases.isLogin, isMounted])
+
+  useEffect(() => {
+    if (!isLogin && isMounted) {
+      router.replace('/login')
+    }
+  }, [isLogin, isMounted])
 
   return (
     <>
@@ -56,7 +68,7 @@ export const Navbar = () => {
               <Text
                 style={iconSelected === 'home' ? styles.textSelected : styles.text}
               >
-                Home
+                Accueil
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -75,7 +87,7 @@ export const Navbar = () => {
                   iconSelected === 'search' ? styles.textSelected : styles.text
                 }
               >
-                Search
+                Recherche
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -94,7 +106,7 @@ export const Navbar = () => {
                   iconSelected === 'garden' ? styles.textSelected : styles.text
                 }
               >
-                Garden
+                Potager
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -113,7 +125,7 @@ export const Navbar = () => {
                   iconSelected === 'profile' ? styles.textSelected : styles.text
                 }
               >
-                Profile
+                Profil
               </Text>
             </TouchableOpacity>
           </>

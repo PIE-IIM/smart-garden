@@ -46,7 +46,6 @@ export class UserUseCases {
   async logout(): Promise<Success> {
     await this.actions.storageActions.deleteToken('authToken');
     this.actions.userActions.setLoginAction(false);
-
     return 'Success';
   }
 
@@ -58,7 +57,7 @@ export class UserUseCases {
     return true;
   }
 
-  isLogin(): boolean {
-    return this.actions.userActions.userIsLogin();
+  public get isLogin(): boolean {
+    return this.actions.userActions.userIsLogin;
   }
 }

@@ -1,25 +1,18 @@
-// app/index.tsx (mise à jour)
 import useUseCase from '@/hooks/useUseCase';
-import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 export default function Home() {
-
     const { gatewayUseCase } = useUseCase();
-
-    const logout = async () => {
-        await gatewayUseCase.userUseCases.logout();
-        router.replace('/login');
+    const loadInit = async () => {
+        await gatewayUseCase.vegetablesUseCases.loadAllVegetables();
     }
-
+    useEffect(() => {
+        loadInit()
+    }, [])
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Smart Garden</Text>
-            <TouchableOpacity
-                style={styles.button}
-                onPress={() => logout()}>
-                <Text style={styles.buttonText}>Créer un compte</Text>
-            </TouchableOpacity>
         </View>
     );
 }
