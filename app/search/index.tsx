@@ -1,3 +1,5 @@
+import { VegetableCard } from "@/components/vegetablesList/vegetable/vegetable";
+import { VegetablesList } from "@/components/vegetablesList/vegetableList";
 import useUseCase from "@/hooks/useUseCase";
 import { Vegetable } from "@/models/models";
 import { router } from "expo-router";
@@ -21,15 +23,11 @@ export default function Search() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.vegetablesContainer}>
+      <VegetablesList>
         {vegetables?.map((vegetable, index) => (
-          <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetable.id}`)} key={index} style={styles.vegetable}>
-            <Image source={{ uri: vegetable.images[0] }}
-              style={styles.vegetableImage} />
-            <Text style={styles.vegetableText}>{vegetable.name}</Text>
-          </TouchableOpacity>
+          <VegetableCard key={index} vegetable={vegetable} />
         ))}
-      </View>
+      </VegetablesList>
     </ScrollView>
   );
 }
@@ -38,27 +36,5 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingTop: 50,
-  },
-  vegetablesContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-    padding: 16,
-    rowGap: "16"
-  },
-  vegetable: {
-    width: '48%',
-    height: '48%',
-    aspectRatio: 1,
-    display: 'flex'
-  },
-  vegetableImage: {
-    width: '100%',
-    height: '95%',
-    borderRadius: 8,
-    margin: 'auto'
-  },
-  vegetableText: {
-    fontWeight: 500
   }
 });
