@@ -36,5 +36,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingTop: 50,
+    paddingLeft: 16,
+    paddingRight: 16
   }
 });

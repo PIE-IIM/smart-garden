@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'space-between',
-        padding: 16,
         rowGap: "16"
     },
 });

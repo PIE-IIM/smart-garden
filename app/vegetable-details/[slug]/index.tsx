@@ -1,9 +1,11 @@
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import useUseCase from "@/hooks/useUseCase";
 import { useEffect, useState } from "react";
 import { Vegetable } from "@/models/models";
 import ArrowLeft from "../../../assets/icons/arrow-left.svg";
+import { VegetablesList } from "@/components/vegetablesList/vegetableList";
+import { VegetableCard } from "@/components/vegetablesList/vegetable/vegetable";
 
 
 export default function VegetableDetails() {
@@ -12,6 +14,14 @@ export default function VegetableDetails() {
     const { slug } = useLocalSearchParams();
     const { gatewayUseCase } = useUseCase();
 
+    const getVegetable = (name: string): Vegetable | undefined => {
+        const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables().find((vegetable) => vegetable.name === name);
+        if (!vegetable) {
+            return undefined;
+        }
+        return vegetable;
+    }
+
     useEffect(() => {
         const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables().find((vegetable => vegetable.id === slug));
         setCurrentVegetable(vegetable);
@@ -19,7 +29,7 @@ export default function VegetableDetails() {
 
     return (
         <>
-            <View style={styles.container}>
+            <ScrollView style={styles.container}>
                 <TouchableOpacity
                     style={styles.backButton}
                     onPress={() => router.back()}>
@@ -41,10 +51,34 @@ export default function VegetableDetails() {
                                 </View>
                             ))}
                         </View>
-
                     </View>
+                    <View style={styles.section}>
+                        <Text style={styles.subTitle}>Plantes amies</Text>
+                        <VegetablesList>
+                            {currentVegetable?.affinity.map((vegetable, index) => {
+                                const foundVegetable = getVegetable(vegetable);
+                                return foundVegetable ? (
+                                    <VegetableCard key={index} vegetable={foundVegetable} />
+                                ) : null;
+                            })}
+                        </VegetablesList>
+                    </View>
+                    {currentVegetable && currentVegetable.bad_neighbors.length > 0 && (
+                        <View style={styles.section}>
+                            <Text style={styles.subTitle}>Plantes ennemies</Text>
+                            <VegetablesList>
+                                {currentVegetable.bad_neighbors.map((vegetable, index) => {
+                                    const foundVegetable = getVegetable(vegetable);
+                                    return foundVegetable ? (
+                                        <VegetableCard key={index} vegetable={foundVegetable} />
+                                    ) : null;
+                                })}
+                            </VegetablesList>
+                        </View>
+                    )}
+
                 </View>
-            </View>
+            </ScrollView>
         </>
     );
 }
@@ -61,7 +95,7 @@ const styles = StyleSheet.create({
         height: 50,
         position: 'absolute',
         left: 16,
-        top: 64,
+        top: 32,
         borderRadius: '50%',
         zIndex: 2
     },
@@ -79,12 +113,13 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         backgroundColor: "#FFFDF0",
-        position: 'absolute',
+        position: 'relative',
         borderTopLeftRadius: 50,
         borderTopRightRadius: 50,
-        top: 300,
+        top: -250,
+        gap: 28,
         padding: 28,
-        gap: 16
+        paddingBottom: 100
     },
     title: {
         fontSize: 28,

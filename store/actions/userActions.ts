@@ -16,7 +16,7 @@ export class UserActions {
     this.dispatch(setLogin(response));
   }
 
-  public userIsLogin(): boolean {
+  public get userIsLogin(): boolean {
     return this.selector.userSliceReducer.isLogin;
   }
 }
