@@ -1,5 +1,4 @@
 import { Http, ResAction } from '@/utils';
-import bcrypt from 'bcryptjs';
 
 export type CreateUserPayload = {
   name: string;
@@ -13,7 +12,7 @@ export type LoginUserPayload = {
 };
 
 //Here we use http service and we interact with APIs
-export class UserServices {
+export class UserService {
   constructor(private http: Http) {}
 
   async createUser(payload: CreateUserPayload): Promise<ResAction> {

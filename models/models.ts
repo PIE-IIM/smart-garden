@@ -8,6 +8,7 @@ export type User = {
 };
 
 export type Vegetable = {
+  id?: string;
   name: string;
   description: string;
   specifications: string[];
@@ -16,6 +17,7 @@ export type Vegetable = {
   harvest: string[];
   affinity: string[];
   bad_neighbors: string[];
+  images: string[];
 };
 
 export type Token = {

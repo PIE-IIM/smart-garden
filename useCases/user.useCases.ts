@@ -1,8 +1,8 @@
 import {
   CreateUserPayload,
   LoginUserPayload,
-  UserServices,
-} from '@/services/user.services';
+  UserService,
+} from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
 import { Token } from '@/models/models';
 import { Failure, Success } from '@/utils';
@@ -11,11 +11,11 @@ import { Failure, Success } from '@/utils';
 export class UserUseCases {
   constructor(
     private actions: Actions,
-    private userServices: UserServices
+    private userService: UserService
   ) {}
 
   async createUser(userData: CreateUserPayload): Promise<Success | Failure> {
-    const response = await this.userServices.createUser(userData);
+    const response = await this.userService.createUser(userData);
     if (response.status === 'Failure') {
       return response.status;
     }
@@ -26,7 +26,7 @@ export class UserUseCases {
   }
 
   async login(userData: LoginUserPayload): Promise<Success | Failure> {
-    const response = await this.userServices.login(userData);
+    const response = await this.userService.login(userData);
     if (response.status === 'Failure') {
       return response.status;
     }

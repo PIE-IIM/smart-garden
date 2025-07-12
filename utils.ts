@@ -2,9 +2,10 @@ import Constants from 'expo-constants';
 
 export type Success = 'Success';
 export type Failure = 'Failure';
+export type Payload = unknown;
 
 export type ResAction = {
-  payload: unknown;
+  payload: Payload;
   status: Success | Failure;
 };
 

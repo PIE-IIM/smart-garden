@@ -1,6 +1,6 @@
-// store/actions/userActions.ts
 import { useAppSelector } from '../hooks';
 import { setLogin, UserState } from '../reducers/userSlice';
+import { VegetablesState } from '../reducers/vegetablesSlice';
 import { AppDispatch } from '../store';
 
 export class UserActions {
@@ -8,6 +8,7 @@ export class UserActions {
     private dispatch: AppDispatch,
     private selector: {
       userSliceReducer: UserState;
+      vegetablesSliceReducer: VegetablesState;
     }
   ) {}
 
