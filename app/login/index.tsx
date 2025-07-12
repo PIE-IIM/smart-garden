@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
 import { Failure, Success } from '@/utils';
-import { CreateUserPayload, LoginUserPayload } from '@/services/user.services';
+import { CreateUserPayload, LoginUserPayload } from '@/services/user.service';
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState<string>('');

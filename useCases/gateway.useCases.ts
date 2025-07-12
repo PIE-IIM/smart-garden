@@ -1,7 +1,9 @@
-import { UserUseCases } from "./user.useCases";
+import { GardenUseCases } from './garden.useCases';
+import { UserUseCases } from './user.useCases';
 
 export class GatewayUseCases {
-    constructor(
-        public userUseCases: UserUseCases
-    ) {}
+  constructor(
+    public userUseCases: UserUseCases,
+    public gardenUseCases: GardenUseCases
+  ) {}
 }

@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator 
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
 import { Failure, Success } from '@/utils';
-import { CreateUserPayload } from '@/services/user.services';
+import { CreateUserPayload } from '@/services/user.service';
 
 export default function RegisterScreen() {
     const [name, setName] = useState<string>('');
@@ -63,7 +63,7 @@ export default function RegisterScreen() {
             )}
 
             <TextInput style={styles.input}
-                placeholder="Nom"
+                placeholder="Nom d'utilisateur"
                 value={name}
                 onChangeText={setName} />
 

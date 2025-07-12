@@ -1,6 +1,8 @@
-import { UserServices } from '@/services/user.services';
+import { GardenService } from '@/services/garden.service';
+import { UserService } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { GardenUseCases } from '@/useCases/garden.useCases';
 import { GatewayUseCases } from '@/useCases/gateway.useCases';
 import { UserUseCases } from '@/useCases/user.useCases';
 import { Http } from '@/utils';
@@ -11,11 +13,13 @@ const useUseCase = () => {
   const http = new Http();
   const actions = new Actions(dispatch, selector);
 
-  const userServices = new UserServices(http);
+  const userService = new UserService(http);
+  const gardenService = new GardenService(http);
 
-  const userUseCases = new UserUseCases(actions, userServices);
+  const userUseCases = new UserUseCases(actions, userService);
+  const gardenUseCases = new GardenUseCases(actions, gardenService);
 
-  const gatewayUseCase = new GatewayUseCases(userUseCases);
+  const gatewayUseCase = new GatewayUseCases(userUseCases, gardenUseCases);
 
   return { gatewayUseCase };
 };
