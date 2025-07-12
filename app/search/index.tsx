@@ -1,8 +1,6 @@
-// app/index.tsx (mise à jour)
 import useUseCase from "@/hooks/useUseCase";
 import { Vegetable } from "@/models/models";
-import { Failure } from "@/utils";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
 
 
@@ -12,20 +10,22 @@ export default function Search() {
   const [error, setError] = useState<string>();
   const { gatewayUseCase } = useUseCase();
 
-  const getVegetables = async () => {
-    const response = await gatewayUseCase.gardenUseCases.getAllVegetables();
+  const loadVegetables = async () => {
+    const response = await gatewayUseCase.vegetablesUseCases.loadAllVegetables();
     if (response === "Failure") {
-      return setError('error');
+      setError(response);
     }
-    setVegetables(response);
+    const vegetables = await gatewayUseCase.vegetablesUseCases.getAllVegetables();
+    setVegetables(vegetables);
   }
 
   useEffect(() => {
-    getVegetables()
+    loadVegetables()
   }, [])
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      {error}
       <View style={styles.vegetablesContainer}>
         {vegetables?.map((vegetable, index) => (
           <View key={index} style={styles.vegetable}>
