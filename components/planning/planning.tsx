@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
   },
   vegetableLabelContainer: {
     width: 100,
-    position: "fixed",
     left: 0,
     top: 0,
     height: "100%",

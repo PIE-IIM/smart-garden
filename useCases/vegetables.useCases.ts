@@ -13,6 +13,7 @@ export class VegetablesUseCases {
 
   async loadAllVegetables(): Promise<Success | Failure> {
     const response = await this.gardenService.getAllVegetables();
+    console.log('hello');
     if (response.status === 'Failure') {
       return response.status;
     }
@@ -21,7 +22,7 @@ export class VegetablesUseCases {
     return response.status;
   }
 
-  async getAllVegetables(): Promise<Vegetable[]> {
+  getAllVegetables(): Vegetable[] {
     return this.actions.vegetablesActions.getAllVegetables();
   }
 }

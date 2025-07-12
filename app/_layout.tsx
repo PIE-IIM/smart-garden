@@ -3,7 +3,6 @@ import StoreProvider from "./StoreProvider";
 import { Navbar } from "@/components/navbar/navbar";
 import * as NavigationBar from "expo-navigation-bar";
 import { useEffect, useState } from "react";
-import useUseCase from "@/hooks/useUseCase";
 import { StorageActions } from "@/store/actions/storageActions";
 
 export default function RootLayout() {

@@ -1,38 +1,33 @@
 import useUseCase from "@/hooks/useUseCase";
 import { Vegetable } from "@/models/models";
+import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, ScrollView } from "react-native";
+import { View, StyleSheet, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 
 
 export default function Search() {
 
   const [vegetables, setVegetables] = useState<Vegetable[]>();
-  const [error, setError] = useState<string>();
   const { gatewayUseCase } = useUseCase();
 
-  const loadVegetables = async () => {
-    const response = await gatewayUseCase.vegetablesUseCases.loadAllVegetables();
-    if (response === "Failure") {
-      setError(response);
-    }
+  const getVegetables = async () => {
     const vegetables = await gatewayUseCase.vegetablesUseCases.getAllVegetables();
     setVegetables(vegetables);
   }
 
   useEffect(() => {
-    loadVegetables()
+    getVegetables()
   }, [])
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {error}
       <View style={styles.vegetablesContainer}>
         {vegetables?.map((vegetable, index) => (
-          <View key={index} style={styles.vegetable}>
+          <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetable.id}`)} key={index} style={styles.vegetable}>
             <Image source={{ uri: vegetable.images[0] }}
               style={styles.vegetableImage} />
             <Text style={styles.vegetableText}>{vegetable.name}</Text>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
     </ScrollView>

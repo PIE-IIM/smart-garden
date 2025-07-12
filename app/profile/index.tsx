@@ -1,4 +1,3 @@
-// app/index.tsx (mise à jour)
 import useUseCase from "@/hooks/useUseCase";
 import { router } from "expo-router";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";

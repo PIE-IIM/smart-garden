@@ -59,6 +59,10 @@ export class UserUseCases {
   }
 
   isLogin(): boolean {
-    return this.actions.userActions.userIsLogin();
+    const isLogin = this.actions.userActions.userIsLogin();
+    if (isLogin === null) {
+      return false;
+    }
+    return true;
   }
 }
