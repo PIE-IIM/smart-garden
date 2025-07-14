@@ -14,7 +14,7 @@ export class VegetablesActions {
     this.dispatch(setVegetables(payload));
   }
 
-  public getAllVegetables(): Vegetable[] {
+  public get getAllVegetables(): Vegetable[] {
     return this.vegetablesState.vegetables;
   }
 }

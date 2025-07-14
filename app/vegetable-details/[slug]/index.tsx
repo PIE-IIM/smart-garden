@@ -27,10 +27,6 @@ export default function VegetableDetails() {
         setCurrentVegetable(vegetable);
     }, [])
 
-    useEffect(() => {
-        console.log(slug)
-    }, [slug])
-
     return (
         <>
             <ScrollView style={styles.container}>

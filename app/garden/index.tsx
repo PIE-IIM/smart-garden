@@ -2,14 +2,19 @@ import { Planning } from "@/components/planning/planning";
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
 import { vegetablesFixture } from "@/vegetables";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VegetableCardGarden } from "@/components/vegetableCardGarden/vegetableCardGarden";
 import { Vegetable } from "@/models/models";
 import { VegetablesGardenList } from "@/components/vegetableCardGarden/vegetablesGardenList";
+import useUseCase from "@/hooks/useUseCase";
 
 export default function Garden() {
 
   const [currentSection, setCurrentSection] = useState<string>('plantes');
+  const [gardenVegetables, setGardenVegetables] = useState<Vegetable[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const { gatewayUseCase, storageActions } = useUseCase();
 
   const vegetable: Vegetable = {
     id: "accfa6d1-f2fa-4e85-94e3-5776e438573f",
@@ -29,6 +34,23 @@ export default function Garden() {
     images: ["https://sxcwavkyzcytbcdnhceq.supabase.co/storage/v1/object/public/garden//tomate.png"]
   };
 
+  const loadGardenVegetables = async () => {
+    const response = await gatewayUseCase.userUseCases.loadGardenVegetables();
+    if (response === "Failure") {
+      setError('Erreur de chargement');
+    }
+  }
+
+  useEffect(() => {
+    loadGardenVegetables()
+  }, [])
+
+  useEffect(() => {
+    if (gatewayUseCase.userUseCases.gardenVegetables) {
+      setGardenVegetables(gatewayUseCase.userUseCases.gardenVegetables)
+    }
+  }, [gatewayUseCase.userUseCases.gardenVegetables])
+
   return (
     <>
       <View style={styles.container}>
@@ -37,12 +59,18 @@ export default function Garden() {
           <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
         </View>
         <ScrollView style={styles.scrollViewContainer}>
+          {error && (
+            <Text style={styles.error}>{error}</Text>
+          )}
           {currentSection === 'plantes' && (
             <View style={styles.gardenContainer}>
-              <VegetablesGardenList>
-                <VegetableCardGarden vegetableProps={vegetable} />
-                <VegetableCardGarden vegetableProps={vegetable} />
-              </VegetablesGardenList>
+              {gardenVegetables?.length > 0 && (
+                <VegetablesGardenList>
+                  {gardenVegetables.map((vegetable, index) => (
+                    <VegetableCardGarden key={index} vegetableProps={vegetable} />
+                  ))}
+                </VegetablesGardenList>
+              )}
               <TouchableOpacity style={styles.button}>
                 <Text style={styles.addVegetableText}>Ajouter une plante</Text>
               </TouchableOpacity>
@@ -83,6 +111,14 @@ const styles = StyleSheet.create({
     width: "85%",
     marginBottom: 16,
     fontWeight: 500
+  },
+  error: {
+    fontSize: 18,
+    textAlign: "center",
+    width: "85%",
+    marginBottom: 16,
+    fontWeight: 500,
+    color: "red",
   },
   button: {
     width: "100%",

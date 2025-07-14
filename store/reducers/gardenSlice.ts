@@ -7,34 +7,15 @@ export interface GardenState {
 }
 
 const initialState: GardenState = {
-  vegetables: [
-    {
-      name: 'Basilic',
-      description:
-        "Herbe aromatique facile à cultiver, aime la chaleur et l'humidité.",
-      specifications: [
-        'Aime la chaleur',
-        'Pousse rapide',
-        'Aromatique puissante',
-      ],
-      sowing: ['mars', 'avril', 'mai'],
-      plantation: ['mai', 'juin'],
-      harvest: ['juin', 'juillet', 'août', 'septembre'],
-      affinity: ['Tomate', 'Poivron', 'Aubergine'],
-      bad_neighbors: ['Rue officinale'],
-      images: [
-        'https://sxcwavkyzcytbcdnhceq.supabase.co/storage/v1/object/public/garden//basilic.png',
-      ],
-    },
-  ],
+  vegetables: [],
 };
 
 const gardenSlice = createSlice({
   name: 'garden',
   initialState,
   reducers: {
-    addVegetable: (state, action: PayloadAction<Vegetable>) => {
-      state.vegetables.push(action.payload);
+    addVegetables: (state, action: PayloadAction<Vegetable[]>) => {
+      state.vegetables = action.payload;
     },
     removeVegetable: (state, action: PayloadAction<Vegetable>) => {
       state.vegetables = state.vegetables.filter(
@@ -44,5 +25,5 @@ const gardenSlice = createSlice({
   },
 });
 
-export const { addVegetable, removeVegetable } = gardenSlice.actions;
+export const { addVegetables, removeVegetable } = gardenSlice.actions;
 export const gardenSliceReducer = gardenSlice.reducer;

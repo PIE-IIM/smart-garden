@@ -7,6 +7,8 @@ import { GatewayUseCases } from '@/useCases/gateway.useCases';
 import { UserUseCases } from '@/useCases/user.useCases';
 import Constants from 'expo-constants';
 import { QuickHttp } from '@jaslay/http';
+import { StorageActions } from '@/store/actions/storageActions';
+import { VegetablesService } from '@/services/vegetables.service';
 
 const extra = Constants.expoConfig?.extra as {
   apiBaseUrl?: string;
@@ -14,10 +16,18 @@ const extra = Constants.expoConfig?.extra as {
 };
 
 const useUseCase = () => {
-  const quickHttp = new QuickHttp(
-    `${extra?.apiBaseUrl ?? ''}${extra?.port ?? ''}`
-  );
+  const storageActions = new StorageActions();
 
+  const quickHttp = new QuickHttp(
+    `${extra?.apiBaseUrl ?? ''}${extra?.port ?? ''}`,
+    {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${storageActions.getToken('authToken')}`,
+    }
+  );
+  const token = async () => {
+    return await storageActions.getToken('authToken');
+  };
   const actions = new Actions(useAppDispatch(), {
     userState: useAppSelector((state) => state.userSliceReducer),
     gardenState: useAppSelector((state) => state.gardenSliceRecucer),
@@ -26,13 +36,14 @@ const useUseCase = () => {
 
   const userService = new UserService(quickHttp);
   const gardenService = new GardenService(quickHttp);
+  const vegetableService = new VegetablesService(quickHttp);
 
-  const userUseCases = new UserUseCases(actions, userService);
-  const vegetablesUseCases = new VegetablesUseCases(actions, gardenService);
+  const userUseCases = new UserUseCases(actions, userService, gardenService);
+  const vegetablesUseCases = new VegetablesUseCases(actions, vegetableService);
 
   const gatewayUseCase = new GatewayUseCases(userUseCases, vegetablesUseCases);
 
-  return { gatewayUseCase };
+  return { gatewayUseCase, storageActions };
 };
 
 export default useUseCase;

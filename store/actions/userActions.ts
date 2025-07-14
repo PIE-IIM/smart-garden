@@ -1,7 +1,6 @@
 import { Vegetable } from '@/models/models';
-import { useAppSelector } from '../hooks';
 import {
-  addVegetable,
+  addVegetables,
   GardenState,
   removeVegetable,
 } from '../reducers/gardenSlice';
@@ -29,8 +28,8 @@ export class UserActions {
     this.dispatch(setLogin(response));
   }
 
-  public addGardenVegetable(vegetable: Vegetable) {
-    return this.dispatch(addVegetable(vegetable));
+  public addGardenVegetables(vegetables: Vegetable[]) {
+    return this.dispatch(addVegetables(vegetables));
   }
 
   public removeGardenVegetable(vegetable: Vegetable) {

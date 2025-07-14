@@ -1,7 +1,7 @@
 // store/reducers/userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User, Vegetable } from '@/models/models';
-import { Failure } from '@/utils';
+import { Vegetable } from '@/models/models';
+import { Failure } from '@jaslay/http';
 
 export interface VegetablesState {
   vegetables: Vegetable[];

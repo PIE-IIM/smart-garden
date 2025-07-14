@@ -1,6 +1,7 @@
 import { Vegetable } from '@/models/models';
 import { GardenService } from '@/services/garden.service';
 import { UserService } from '@/services/user.service';
+import { VegetablesService } from '@/services/vegetables.service';
 import { Actions } from '@/store/actions/actions';
 import { Failure, Success } from '@jaslay/http';
 
@@ -8,11 +9,11 @@ import { Failure, Success } from '@jaslay/http';
 export class VegetablesUseCases {
   constructor(
     private actions: Actions,
-    private gardenService: GardenService
+    private vegetableService: VegetablesService
   ) {}
 
   async loadAllVegetables(): Promise<Success | Failure> {
-    const response = await this.gardenService.getAllVegetables();
+    const response = await this.vegetableService.getAllVegetables();
     if (response.status === 'Failure') {
       return response.status;
     }
@@ -22,6 +23,6 @@ export class VegetablesUseCases {
   }
 
   getAllVegetables(): Vegetable[] {
-    return this.actions.vegetablesActions.getAllVegetables();
+    return this.actions.vegetablesActions.getAllVegetables;
   }
 }

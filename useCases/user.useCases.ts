@@ -6,13 +6,23 @@ import {
 import { Actions } from '@/store/actions/actions';
 import { Token, Vegetable } from '@/models/models';
 import { Failure, Success } from '@jaslay/http';
+import { GardenService } from '@/services/garden.service';
 
 //Here we call the services and the actions from the store
 export class UserUseCases {
   constructor(
     private actions: Actions,
-    private userService: UserService
+    private userService: UserService,
+    private gardenService: GardenService
   ) {}
+
+  public get isLogin(): boolean {
+    return this.actions.userActions.userIsLogin;
+  }
+
+  public get gardenVegetables(): Vegetable[] {
+    return this.actions.userActions.gardenVegetables;
+  }
 
   async createUser(userData: CreateUserPayload): Promise<Success | Failure> {
     const response = await this.userService.createUser(userData);
@@ -57,16 +67,26 @@ export class UserUseCases {
     return true;
   }
 
-  public get isLogin(): boolean {
-    return this.actions.userActions.userIsLogin;
+  public async loadGardenVegetables(): Promise<Success | Failure> {
+    const response = await this.gardenService.getGardenVegetables();
+    console.log(response);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    const payload = response.payload as Vegetable[];
+    this.actions.userActions.addGardenVegetables(payload);
+    return response.status;
   }
 
-  public get gardenVegetables(): Vegetable[] {
-    return this.actions.userActions.gardenVegetables;
-  }
-
-  public addGardenVegetable(vegetable: Vegetable): void {
-    this.actions.userActions.addGardenVegetable(vegetable);
+  public async addVegetableToGarden(vegetableId: string) {
+    const payload = {
+      vegetableId: vegetableId,
+    };
+    const response = await this.gardenService.addVegetableToGarden(payload);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    return response.status;
   }
 
   public removeGardenVegetable(vegetable: Vegetable): void {

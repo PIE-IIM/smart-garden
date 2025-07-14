@@ -1,5 +1,6 @@
 import { Vegetable } from '@/models/models';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native';
 
@@ -9,10 +10,13 @@ type VegetableCardGardenPropsType = {
 
 export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenPropsType) => {
 
+    useEffect(() => {
+        console.log(vegetableProps)
+    }, [])
 
     return (
         <>
-            <TouchableOpacity onPress={() => router.replace(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
+            <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
                 <Image source={{ uri: vegetableProps.images[0] }}
                     style={styles.vegetableImage} />
                 <View style={styles.vegetableDescriptionContainer}>
