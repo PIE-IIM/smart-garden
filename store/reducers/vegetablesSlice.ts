@@ -13,7 +13,7 @@ const initialState: VegetablesState = {
   status: null,
 };
 
-export const vegetablesSlice = createSlice({
+const vegetablesSlice = createSlice({
   name: 'vegetables',
   initialState,
   reducers: {

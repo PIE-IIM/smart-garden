@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Garden() {
 
-  const [currentSection, setCurrentSection] = useState<string>('calendrier');
+  const [currentSection, setCurrentSection] = useState<string>('plantes');
 
   return (
     <>
@@ -16,12 +16,17 @@ export default function Garden() {
           <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
         </View>
         <ScrollView>
+          {currentSection === 'plantes' && (
+            <>
+              <Text>hello</Text>
+            </>
+          )}
           {currentSection === 'calendrier' && (
             <>
               <Planning vegetablesOnPlanning={vegetablesFixture} />
-              <TouchableOpacity style={styles.button}>
+              {/* <TouchableOpacity style={styles.button}>
                 <Text style={styles.addVegetableText}>Ajouter une plante</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </>
           )}
         </ScrollView>

@@ -2,7 +2,7 @@ import { Vegetable } from '@/models/models';
 import { GardenService } from '@/services/garden.service';
 import { UserService } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
-import { Failure, Success } from '@/utils';
+import { Failure, Success } from '@jaslay/http';
 
 //Here we call the services and the actions from the store
 export class VegetablesUseCases {
@@ -13,7 +13,6 @@ export class VegetablesUseCases {
 
   async loadAllVegetables(): Promise<Success | Failure> {
     const response = await this.gardenService.getAllVegetables();
-    console.log('hello');
     if (response.status === 'Failure') {
       return response.status;
     }

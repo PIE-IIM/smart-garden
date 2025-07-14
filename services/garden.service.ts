@@ -1,11 +1,11 @@
-import { Http, ResAction } from '@/utils';
+import { QuickHttp, ResAction } from '@jaslay/http';
 
 //Here we use http service and we interact with APIs
 export class GardenService {
-  constructor(private http: Http) {}
+  constructor(private quickHttp: QuickHttp) {}
 
   async getAllVegetables(): Promise<ResAction> {
-    const response = await this.http.get('/api/vegetables');
+    const response = await this.quickHttp.get('/api/vegetables');
     return response;
   }
 }

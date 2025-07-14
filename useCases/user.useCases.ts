@@ -4,8 +4,8 @@ import {
   UserService,
 } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
-import { Token } from '@/models/models';
-import { Failure, Success } from '@/utils';
+import { Token, Vegetable } from '@/models/models';
+import { Failure, Success } from '@jaslay/http';
 
 //Here we call the services and the actions from the store
 export class UserUseCases {
@@ -59,5 +59,17 @@ export class UserUseCases {
 
   public get isLogin(): boolean {
     return this.actions.userActions.userIsLogin;
+  }
+
+  public get gardenVegetables(): Vegetable[] {
+    return this.actions.userActions.gardenVegetables;
+  }
+
+  public addGardenVegetable(vegetable: Vegetable): void {
+    this.actions.userActions.addGardenVegetable(vegetable);
+  }
+
+  public removeGardenVegetable(vegetable: Vegetable): void {
+    this.actions.userActions.removeGardenVegetable(vegetable);
   }
 }
