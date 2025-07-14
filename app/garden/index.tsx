@@ -3,30 +3,54 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-nati
 import { vegetablesFixture } from "@/vegetables";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
 import { useState } from "react";
+import { VegetableCardGarden } from "@/components/vegetableCardGarden/vegetableCardGarden";
+import { Vegetable } from "@/models/models";
+import { VegetablesGardenList } from "@/components/vegetableCardGarden/vegetablesGardenList";
 
 export default function Garden() {
 
   const [currentSection, setCurrentSection] = useState<string>('plantes');
 
+  const vegetable: Vegetable = {
+    id: "accfa6d1-f2fa-4e85-94e3-5776e438573f",
+    name: "Tomate",
+    description:
+      "Plante fruitière très populaire, nécessite beaucoup de lumière et de chaleur.",
+    specifications: [
+      "Besoin ensoleillement élevé",
+      "Sensible au mildiou",
+      "Croissance verticale",
+    ],
+    sowing: ["février", "mars", "avril"],
+    plantation: ["avril", "mai", "juin"],
+    harvest: ["juillet", "août", "septembre", "octobre"],
+    affinity: ["Basilic", "Carotte", "Oignon"],
+    bad_neighbors: ["Pomme de terre", "Fenouil"],
+    images: ["https://sxcwavkyzcytbcdnhceq.supabase.co/storage/v1/object/public/garden//tomate.png"]
+  };
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.title}>Mon jardin</Text>
+          <Text style={styles.title}>Mon potager</Text>
           <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
         </View>
-        <ScrollView>
+        <ScrollView style={styles.scrollViewContainer}>
           {currentSection === 'plantes' && (
-            <>
-              <Text>hello</Text>
-            </>
+            <View style={styles.gardenContainer}>
+              <VegetablesGardenList>
+                <VegetableCardGarden vegetableProps={vegetable} />
+                <VegetableCardGarden vegetableProps={vegetable} />
+              </VegetablesGardenList>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.addVegetableText}>Ajouter une plante</Text>
+              </TouchableOpacity>
+            </View>
           )}
           {currentSection === 'calendrier' && (
             <>
               <Planning vegetablesOnPlanning={vegetablesFixture} />
-              {/* <TouchableOpacity style={styles.button}>
-                <Text style={styles.addVegetableText}>Ajouter une plante</Text>
-              </TouchableOpacity> */}
             </>
           )}
         </ScrollView>
@@ -42,6 +66,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFDF0",
     paddingTop: "15%"
   },
+  scrollViewContainer: {
+    width: '100%',
+  },
+  gardenContainer: {
+    width: '85%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
   header: {
     paddingBottom: 16
   },
@@ -53,7 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 500
   },
   button: {
-    width: "85%",
+    width: "100%",
     paddingTop: 16,
     paddingBottom: 16,
     color: "#345624",
