@@ -59,9 +59,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#FFFDF0",
     paddingTop: "15%",
     gap: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    backgroundColor: "#FFFDF0",
   },
   scrollViewContainer: {
     width: '100%',

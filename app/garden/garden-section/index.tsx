@@ -33,7 +33,9 @@ export default function GardenSection({ gardenVegetablesProps }: GardenSectionPr
 
 const styles = StyleSheet.create({
     gardenContainer: {
-        width: '85%',
+        width: '100%',
+        paddingLeft: 0,
+        paddingRight: 0,
         marginLeft: 'auto',
         marginRight: 'auto',
     },

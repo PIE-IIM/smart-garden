@@ -25,7 +25,7 @@ export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenProps
 
 const styles = StyleSheet.create({
     container: {
-        width: "auto",
+        width: "100%",
         height: 150,
         backgroundColor: '#EBECD2',
         borderRadius: 16,

@@ -42,6 +42,6 @@ export default function RootLayout() {
         </Stack>
         <Navbar />
       </>
-    </StoreProvider>
+    </StoreProvider >
   );
 }

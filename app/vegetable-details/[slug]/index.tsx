@@ -90,6 +90,7 @@ export default function VegetableDetails() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 32,
+        backgroundColor: "#FFFDF0",
     },
     backButton: {
         backgroundColor: '#BABABA',
