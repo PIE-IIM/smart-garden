@@ -13,14 +13,11 @@ export default function Search() {
   const [vegetables, setVegetables] = useState<Vegetable[]>();
   const { gatewayUseCase } = useUseCase();
 
-  const getVegetables = async () => {
-    const vegetables = await gatewayUseCase.vegetablesUseCases.getAllVegetables();
-    setVegetables(vegetables);
-  }
-
   useEffect(() => {
-    getVegetables()
-  }, [])
+    if (gatewayUseCase.vegetablesUseCases.getAllVegetables.length > 0) {
+      setVegetables(gatewayUseCase.vegetablesUseCases.getAllVegetables);
+    }
+  }, [gatewayUseCase.vegetablesUseCases.getAllVegetables])
 
   const moveToVegetableDetails = (vegetable: Vegetable) => {
     router.push(`/vegetable-details/${vegetable.id}`)
@@ -44,6 +41,7 @@ const styles = StyleSheet.create({
     paddingTop: "15%",
     paddingLeft: 16,
     paddingRight: 16,
+    paddingBottom: 100,
     backgroundColor: "#FFFDF0",
   }
 });
