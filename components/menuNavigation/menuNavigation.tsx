@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     menuBtn: {
         display: 'flex',
         flexDirection: 'row',
-        width: '85%',
+        width: '90%',
         gap: 28
     },
     menuLabel: {

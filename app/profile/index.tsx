@@ -3,10 +3,8 @@ import useUseCase from "@/hooks/useUseCase";
 import { User } from "@/models/models";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import GrinningFace from "../../assets/icons/grinningFace.svg";
+import { View, StyleSheet } from "react-native";
 import DisconnectIcon from "../../assets/icons/disconnectIcon.svg";
-import ArrowMenu from "../../assets/icons/arrow-menu.svg";
 import { MenuNavigation } from "@/components/menuNavigation/menuNavigation";
 import { UserBanner } from "@/components/userBanner/userBanner";
 

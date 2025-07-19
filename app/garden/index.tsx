@@ -35,8 +35,10 @@ export default function Garden() {
   return (
     <>
       <View style={styles.container}>
-        <Header title={"Mon potager"} />
-        <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
+        <View>
+          <Header title={"Mon potager"} />
+          <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
+        </View>
         <ScrollView style={styles.scrollViewContainer}>
           {error && (
             <Text style={styles.error}>{error}</Text>
@@ -61,8 +63,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingTop: "15%",
     gap: 16,
-    paddingLeft: 16,
-    paddingRight: 16,
     backgroundColor: "#FFFDF0",
   },
   scrollViewContainer: {

@@ -26,7 +26,7 @@ export const UserBanner = ({ name, email }: UserBannerPropsType) => {
 const styles = StyleSheet.create({
     userBanner: {
         backgroundColor: "#EBECD2",
-        width: "85%",
+        width: "90%",
         height: 'auto',
         borderRadius: 16,
         display: 'flex',

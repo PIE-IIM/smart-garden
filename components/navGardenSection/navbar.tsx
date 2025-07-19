@@ -28,7 +28,7 @@ export const NavBarGardenSection = ({ currentSectionProps, setCurrentSectionProp
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: '90%',
     height: "auto",
     padding: 4,
     display: 'flex',

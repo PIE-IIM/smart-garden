@@ -17,8 +17,7 @@ export const Header = ({ title }: HeaderPropsType) => {
 
 const styles = StyleSheet.create({
     header: {
-        paddingBottom: 8,
-        width: '85%'
+        width: '90%'
     },
     title: {
         fontSize: 22,
