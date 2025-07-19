@@ -4,6 +4,7 @@ import { StorageActions } from './storageActions';
 import { UserState } from '../reducers/userSlice';
 import { VegetablesActions } from './vegetables.actions';
 import { VegetablesState } from '../reducers/vegetablesSlice';
+import { GardenState } from '../reducers/gardenSlice';
 
 //Here we interact only with the store
 export class Actions {
@@ -14,12 +15,20 @@ export class Actions {
   constructor(
     private dispatch: AppDispatch,
     private selector: {
-      userSliceReducer: UserState;
-      vegetablesSliceReducer: VegetablesState;
+      userState: UserState;
+      gardenState: GardenState;
+      vegetablesState: VegetablesState;
     }
   ) {
-    this.userActions = new UserActions(dispatch, selector);
+    this.vegetablesActions = new VegetablesActions(
+      dispatch,
+      this.selector.vegetablesState
+    );
+    this.userActions = new UserActions(
+      dispatch,
+      this.selector.userState,
+      this.selector.gardenState
+    );
     this.storageActions = new StorageActions();
-    this.vegetablesActions = new VegetablesActions(dispatch, selector);
   }
 }

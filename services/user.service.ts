@@ -1,4 +1,4 @@
-import { Http, ResAction } from '@/utils';
+import { QuickHttp, ResAction } from '@jaslay/http';
 
 export type CreateUserPayload = {
   name: string;
@@ -13,15 +13,15 @@ export type LoginUserPayload = {
 
 //Here we use http service and we interact with APIs
 export class UserService {
-  constructor(private http: Http) {}
+  constructor(private quickHttp: QuickHttp) {}
 
   async createUser(payload: CreateUserPayload): Promise<ResAction> {
-    const response = await this.http.post('/api/signup', payload);
+    const response = await this.quickHttp.post('/api/signup', payload);
     return response;
   }
 
   async login(payload: LoginUserPayload): Promise<ResAction> {
-    const response = await this.http.post('/api/login', payload);
+    const response = await this.quickHttp.post('/api/login', payload);
     return response;
   }
 }

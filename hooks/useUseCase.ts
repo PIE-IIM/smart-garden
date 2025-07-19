@@ -5,19 +5,41 @@ import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { VegetablesUseCases } from '@/useCases/vegetables.useCases';
 import { GatewayUseCases } from '@/useCases/gateway.useCases';
 import { UserUseCases } from '@/useCases/user.useCases';
-import { Http } from '@/utils';
+import Constants from 'expo-constants';
+import { QuickHttp } from '@jaslay/http';
+import { StorageActions } from '@/store/actions/storageActions';
+import { VegetablesService } from '@/services/vegetables.service';
+
+const extra = Constants.expoConfig?.extra as {
+  apiBaseUrl?: string;
+  port?: string;
+};
 
 const useUseCase = () => {
-  const dispatch = useAppDispatch();
-  const selector = useAppSelector((state) => state);
-  const http = new Http();
-  const actions = new Actions(dispatch, selector);
+  const storageActions = new StorageActions();
 
-  const userService = new UserService(http);
-  const gardenService = new GardenService(http);
+  const quickHttp = new QuickHttp(
+    `${extra?.apiBaseUrl ?? ''}${extra?.port ?? ''}`,
+    {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${storageActions.getToken('authToken')}`,
+    }
+  );
+  const token = async () => {
+    return await storageActions.getToken('authToken');
+  };
+  const actions = new Actions(useAppDispatch(), {
+    userState: useAppSelector((state) => state.userSliceReducer),
+    gardenState: useAppSelector((state) => state.gardenSliceRecucer),
+    vegetablesState: useAppSelector((state) => state.vegetablesSliceReducer),
+  });
 
-  const userUseCases = new UserUseCases(actions, userService);
-  const vegetablesUseCases = new VegetablesUseCases(actions, gardenService);
+  const userService = new UserService(quickHttp);
+  const gardenService = new GardenService(quickHttp);
+  const vegetableService = new VegetablesService(quickHttp);
+
+  const userUseCases = new UserUseCases(actions, userService, gardenService);
+  const vegetablesUseCases = new VegetablesUseCases(actions, vegetableService);
 
   const gatewayUseCase = new GatewayUseCases(userUseCases, vegetablesUseCases);
 

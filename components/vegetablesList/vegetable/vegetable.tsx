@@ -4,12 +4,13 @@ import { StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 
 type VegetableProps = {
     vegetable: Vegetable,
+    callBack: () => unknown
 }
 
-export const VegetableCard = ({ vegetable }: VegetableProps) => {
+export const VegetableCard = ({ vegetable, callBack }: VegetableProps) => {
 
     return (
-        <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetable.id}`)} style={styles.vegetable}>
+        <TouchableOpacity onPress={callBack} style={styles.vegetable}>
             <Image source={{ uri: vegetable.images[0] }}
                 style={styles.vegetableImage} />
             <Text style={styles.vegetableText}>{vegetable.name}</Text>

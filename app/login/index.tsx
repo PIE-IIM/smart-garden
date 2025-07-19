@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
-import { Failure, Success } from '@/utils';
-import { CreateUserPayload, LoginUserPayload } from '@/services/user.service';
+import { LoginUserPayload } from '@/services/user.service';
+import { Failure, Success } from '@jaslay/http';
 
 export default function RegisterScreen() {
     const [email, setEmail] = useState<string>('');

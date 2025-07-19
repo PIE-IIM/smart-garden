@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { userSliceReducer } from './reducers/userSlice';
 import { vegetablesSliceReducer } from './reducers/vegetablesSlice';
+import { gardenSliceReducer } from './reducers/gardenSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       userSliceReducer: userSliceReducer,
+      gardenSliceRecucer: gardenSliceReducer,
       vegetablesSliceReducer: vegetablesSliceReducer,
     },
   });

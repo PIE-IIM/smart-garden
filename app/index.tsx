@@ -7,7 +7,7 @@ export default function Index() {
   const { gatewayUseCase } = useUseCase();
 
   const checkToken = async () => {
-    const hasToken = await gatewayUseCase.userUseCases.isLogin();
+    const hasToken = await gatewayUseCase.userUseCases.isLogin;
     if (hasToken) {
       router.replace('/home');
     } else {

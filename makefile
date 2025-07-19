@@ -15,3 +15,6 @@ start-android:
 
 build:
 	eas build:configure
+
+wifi-ip:
+	ipconfig getifaddr en0

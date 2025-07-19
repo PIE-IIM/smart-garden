@@ -67,7 +67,7 @@ export default function VegetableDetails() {
                         <View style={styles.section}>
                             <Text style={styles.subTitle}>Plantes ennemies</Text>
                             <VegetablesList>
-                                {currentVegetable.bad_neighbors.map((vegetable, index) => {
+                                {currentVegetable?.bad_neighbors.map((vegetable, index) => {
                                     const foundVegetable = getVegetable(vegetable);
                                     return foundVegetable ? (
                                         <VegetableCard key={index} vegetable={foundVegetable} />
