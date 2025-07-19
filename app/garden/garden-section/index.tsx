@@ -23,8 +23,8 @@ export default function GardenSection({ gardenVegetablesProps }: GardenSectionPr
                         ))}
                     </VegetablesGardenList>
                 )}
-                <TouchableOpacity onPress={() => router.navigate('/add-vegetable')} style={styles.button}>
-                    <Text style={styles.addVegetableText}>Ajouter au potager</Text>
+                <TouchableOpacity onPress={() => router.push('/add-vegetable')} style={styles.button}>
+                    <Text style={styles.addVegetableText}>Agrandir mon potager</Text>
                 </TouchableOpacity>
             </View>
         </>

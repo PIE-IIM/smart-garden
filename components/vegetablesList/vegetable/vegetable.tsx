@@ -1,5 +1,4 @@
 import { Vegetable } from '@/models/models';
-import { router } from 'expo-router';
 import { StyleSheet, TouchableOpacity, Image, Text } from 'react-native';
 
 type VegetableProps = {

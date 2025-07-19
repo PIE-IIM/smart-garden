@@ -25,9 +25,6 @@ const useUseCase = () => {
       Authorization: `Bearer ${storageActions.getToken('authToken')}`,
     }
   );
-  const token = async () => {
-    return await storageActions.getToken('authToken');
-  };
   const actions = new Actions(useAppDispatch(), {
     userState: useAppSelector((state) => state.userSliceReducer),
     gardenState: useAppSelector((state) => state.gardenSliceRecucer),

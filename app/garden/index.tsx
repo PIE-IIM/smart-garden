@@ -1,14 +1,11 @@
 import { Planning } from "@/components/planning/planning";
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
-import { vegetablesFixture } from "@/vegetables";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
 import { useEffect, useState } from "react";
-import { VegetableCardGarden } from "@/components/vegetableCardGarden/vegetableCardGarden";
 import { Vegetable } from "@/models/models";
-import { VegetablesGardenList } from "@/components/vegetableCardGarden/vegetablesGardenList";
 import useUseCase from "@/hooks/useUseCase";
-import { router } from "expo-router";
 import GardenSection from "./garden-section";
+import { Header } from "@/components/header/header";
 
 export default function Garden() {
 
@@ -38,10 +35,8 @@ export default function Garden() {
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Mon potager</Text>
-          <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
-        </View>
+        <Header title={"Mon potager"} />
+        <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
         <ScrollView style={styles.scrollViewContainer}>
           {error && (
             <Text style={styles.error}>{error}</Text>
@@ -65,20 +60,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#FFFDF0",
-    paddingTop: "15%"
+    paddingTop: "15%",
+    gap: 16,
   },
   scrollViewContainer: {
     width: '100%',
-  },
-  header: {
-    paddingBottom: 16
-  },
-  title: {
-    fontSize: 22,
-    textAlign: "left",
-    width: "85%",
-    marginBottom: 16,
-    fontWeight: 500
   },
   error: {
     fontSize: 18,
