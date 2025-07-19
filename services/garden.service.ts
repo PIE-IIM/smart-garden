@@ -1,4 +1,3 @@
-import { Vegetable } from '@/models/models';
 import { QuickHttp, ResAction } from '@jaslay/http';
 
 export type AddVegetableToGardenPayload = {

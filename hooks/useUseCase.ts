@@ -43,7 +43,7 @@ const useUseCase = () => {
 
   const gatewayUseCase = new GatewayUseCases(userUseCases, vegetablesUseCases);
 
-  return { gatewayUseCase, storageActions };
+  return { gatewayUseCase };
 };
 
 export default useUseCase;

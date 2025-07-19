@@ -60,7 +60,7 @@ export class UserUseCases {
   }
 
   async userHasToken(): Promise<boolean> {
-    const token = await this.actions.storageActions.getToken('authToken');
+    const token = this.actions.storageActions.getToken('authToken');
     if (token === null) {
       return false;
     }
@@ -69,7 +69,6 @@ export class UserUseCases {
 
   public async loadGardenVegetables(): Promise<Success | Failure> {
     const response = await this.gardenService.getGardenVegetables();
-    console.log(response);
     if (response.status === 'Failure') {
       return response.status;
     }
@@ -78,7 +77,7 @@ export class UserUseCases {
     return response.status;
   }
 
-  public async addVegetableToGarden(vegetableId: string) {
+  public async putVegetableToGarden(vegetableId: string) {
     const payload = {
       vegetableId: vegetableId,
     };

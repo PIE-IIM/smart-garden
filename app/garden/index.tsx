@@ -7,6 +7,8 @@ import { VegetableCardGarden } from "@/components/vegetableCardGarden/vegetableC
 import { Vegetable } from "@/models/models";
 import { VegetablesGardenList } from "@/components/vegetableCardGarden/vegetablesGardenList";
 import useUseCase from "@/hooks/useUseCase";
+import { router } from "expo-router";
+import GardenSection from "./garden-section";
 
 export default function Garden() {
 
@@ -14,25 +16,7 @@ export default function Garden() {
   const [gardenVegetables, setGardenVegetables] = useState<Vegetable[]>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const { gatewayUseCase, storageActions } = useUseCase();
-
-  const vegetable: Vegetable = {
-    id: "accfa6d1-f2fa-4e85-94e3-5776e438573f",
-    name: "Tomate",
-    description:
-      "Plante fruitière très populaire, nécessite beaucoup de lumière et de chaleur.",
-    specifications: [
-      "Besoin ensoleillement élevé",
-      "Sensible au mildiou",
-      "Croissance verticale",
-    ],
-    sowing: ["février", "mars", "avril"],
-    plantation: ["avril", "mai", "juin"],
-    harvest: ["juillet", "août", "septembre", "octobre"],
-    affinity: ["Basilic", "Carotte", "Oignon"],
-    bad_neighbors: ["Pomme de terre", "Fenouil"],
-    images: ["https://sxcwavkyzcytbcdnhceq.supabase.co/storage/v1/object/public/garden//tomate.png"]
-  };
+  const { gatewayUseCase } = useUseCase();
 
   const loadGardenVegetables = async () => {
     const response = await gatewayUseCase.userUseCases.loadGardenVegetables();
@@ -63,22 +47,11 @@ export default function Garden() {
             <Text style={styles.error}>{error}</Text>
           )}
           {currentSection === 'plantes' && (
-            <View style={styles.gardenContainer}>
-              {gardenVegetables?.length > 0 && (
-                <VegetablesGardenList>
-                  {gardenVegetables.map((vegetable, index) => (
-                    <VegetableCardGarden key={index} vegetableProps={vegetable} />
-                  ))}
-                </VegetablesGardenList>
-              )}
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.addVegetableText}>Ajouter une plante</Text>
-              </TouchableOpacity>
-            </View>
+            <GardenSection gardenVegetablesProps={gardenVegetables} />
           )}
           {currentSection === 'calendrier' && (
             <>
-              <Planning vegetablesOnPlanning={vegetablesFixture} />
+              <Planning vegetablesOnPlanning={gardenVegetables} />
             </>
           )}
         </ScrollView>
@@ -96,11 +69,6 @@ const styles = StyleSheet.create({
   },
   scrollViewContainer: {
     width: '100%',
-  },
-  gardenContainer: {
-    width: '85%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
   },
   header: {
     paddingBottom: 16
@@ -120,20 +88,4 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: "red",
   },
-  button: {
-    width: "100%",
-    paddingTop: 16,
-    paddingBottom: 16,
-    color: "#345624",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 50,
-    marginBottom: 50,
-    marginLeft: "auto",
-    marginRight: "auto"
-  },
-  addVegetableText: {
-    fontSize: 18,
-    textAlign: "center"
-  }
 });

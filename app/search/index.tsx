@@ -21,11 +21,15 @@ export default function Search() {
     getVegetables()
   }, [])
 
+  const moveToVegetableDetails = (vegetable: Vegetable) => {
+    router.navigate(`/vegetable-details/${vegetable.id}`)
+  }
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <VegetablesList>
         {vegetables?.map((vegetable, index) => (
-          <VegetableCard key={index} vegetable={vegetable} />
+          <VegetableCard key={index} vegetable={vegetable} callBack={() => moveToVegetableDetails(vegetable)} />
         ))}
       </VegetablesList>
     </ScrollView>

@@ -10,10 +10,6 @@ type VegetableCardGardenPropsType = {
 
 export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenPropsType) => {
 
-    useEffect(() => {
-        console.log(vegetableProps)
-    }, [])
-
     return (
         <>
             <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
