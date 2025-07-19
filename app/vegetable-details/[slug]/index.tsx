@@ -22,6 +22,10 @@ export default function VegetableDetails() {
         return vegetable;
     }
 
+    const moveToVegetableDetails = (vegetable: Vegetable) => {
+        router.push(`/vegetable-details/${vegetable.id}`)
+    }
+
     useEffect(() => {
         const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables().find((vegetable => vegetable.id === slug));
         setCurrentVegetable(vegetable);
@@ -58,7 +62,7 @@ export default function VegetableDetails() {
                             {currentVegetable?.affinity.map((vegetable, index) => {
                                 const foundVegetable = getVegetable(vegetable);
                                 return foundVegetable ? (
-                                    <VegetableCard key={index} vegetable={foundVegetable} />
+                                    <VegetableCard key={index} vegetable={foundVegetable} callBack={() => moveToVegetableDetails(foundVegetable)} />
                                 ) : null;
                             })}
                         </VegetablesList>
@@ -70,7 +74,7 @@ export default function VegetableDetails() {
                                 {currentVegetable?.bad_neighbors.map((vegetable, index) => {
                                     const foundVegetable = getVegetable(vegetable);
                                     return foundVegetable ? (
-                                        <VegetableCard key={index} vegetable={foundVegetable} />
+                                        <VegetableCard key={index} vegetable={foundVegetable} callBack={() => moveToVegetableDetails(foundVegetable)} />
                                     ) : null;
                                 })}
                             </VegetablesList>
@@ -86,6 +90,7 @@ export default function VegetableDetails() {
 const styles = StyleSheet.create({
     container: {
         paddingTop: 32,
+        backgroundColor: "#FFFDF0",
     },
     backButton: {
         backgroundColor: '#BABABA',

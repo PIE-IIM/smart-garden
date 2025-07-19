@@ -4,7 +4,7 @@ import {
   UserService,
 } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
-import { Token, Vegetable } from '@/models/models';
+import { LoginInfos, User, Vegetable } from '@/models/models';
 import { Failure, Success } from '@jaslay/http';
 import { GardenService } from '@/services/garden.service';
 
@@ -24,12 +24,16 @@ export class UserUseCases {
     return this.actions.userActions.gardenVegetables;
   }
 
+  public get user(): User | void {
+    return this.actions.userActions.user;
+  }
+
   async createUser(userData: CreateUserPayload): Promise<Success | Failure> {
     const response = await this.userService.createUser(userData);
     if (response.status === 'Failure') {
       return response.status;
     }
-    const payload = response.payload as unknown as Token;
+    const payload = response.payload as unknown as LoginInfos;
     this.actions.storageActions.putToken('authToken', payload.token);
     this.actions.userActions.setLoginAction(true);
     return response.status;
@@ -40,7 +44,7 @@ export class UserUseCases {
     if (response.status === 'Failure') {
       return response.status;
     }
-    const payload = response.payload as unknown as Token;
+    const payload = response.payload as unknown as LoginInfos;
 
     //check if the user's token already exists, if so, delete it
     const isTokenAlreadyExists =
@@ -50,6 +54,11 @@ export class UserUseCases {
     }
     await this.actions.storageActions.putToken('authToken', payload.token);
     this.actions.userActions.setLoginAction(true);
+    const userInfos: User = {
+      name: payload.userName,
+      email: payload.email,
+    };
+    this.actions.userActions.setUserAction(userInfos);
     return response.status;
   }
 

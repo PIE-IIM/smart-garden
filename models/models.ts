@@ -1,10 +1,8 @@
 // models/models.ts
 
 export type User = {
-  id: string;
   name: string;
   email: string;
-  password?: string;
 };
 
 export type Vegetable = {
@@ -20,6 +18,8 @@ export type Vegetable = {
   images: string[];
 };
 
-export type Token = {
+export type LoginInfos = {
   token: string;
+  userName: string;
+  email: string;
 };

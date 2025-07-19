@@ -12,7 +12,7 @@ export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenProps
 
     return (
         <>
-            <TouchableOpacity onPress={() => router.navigate(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
+            <TouchableOpacity onPress={() => router.push(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
                 <Image source={{ uri: vegetableProps.images[0] }}
                     style={styles.vegetableImage} />
                 <View style={styles.vegetableDescriptionContainer}>
@@ -25,7 +25,7 @@ export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenProps
 
 const styles = StyleSheet.create({
     container: {
-        width: "auto",
+        width: "100%",
         height: 150,
         backgroundColor: '#EBECD2',
         borderRadius: 16,

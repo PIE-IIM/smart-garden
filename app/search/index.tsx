@@ -1,3 +1,4 @@
+import { Header } from "@/components/header/header";
 import { VegetableCard } from "@/components/vegetablesList/vegetable/vegetable";
 import { VegetablesList } from "@/components/vegetablesList/vegetableList";
 import useUseCase from "@/hooks/useUseCase";
@@ -22,11 +23,12 @@ export default function Search() {
   }, [])
 
   const moveToVegetableDetails = (vegetable: Vegetable) => {
-    router.navigate(`/vegetable-details/${vegetable.id}`)
+    router.push(`/vegetable-details/${vegetable.id}`)
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Header title="Rechercher" />
       <VegetablesList>
         {vegetables?.map((vegetable, index) => (
           <VegetableCard key={index} vegetable={vegetable} callBack={() => moveToVegetableDetails(vegetable)} />
@@ -39,8 +41,9 @@ export default function Search() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    paddingTop: 50,
+    paddingTop: "15%",
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16,
+    backgroundColor: "#FFFDF0",
   }
 });
