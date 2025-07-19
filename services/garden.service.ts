@@ -19,4 +19,9 @@ export class GardenService {
     const response = await this.quickHttp.post('/api/user/vegetable', payload);
     return response;
   }
+
+  async removeVegetableToGarden(id: string): Promise<ResAction> {
+    const response = await this.quickHttp.delete(`/api/user/vegetable/${id}`);
+    return response;
+  }
 }

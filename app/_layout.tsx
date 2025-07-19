@@ -34,7 +34,10 @@ export default function RootLayout() {
   return (
     <StoreProvider>
       <>
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{
+          headerShown: false,
+          animation: 'none',
+        }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="search" />
           <Stack.Screen name="garden" />

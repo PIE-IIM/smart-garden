@@ -5,7 +5,7 @@ import {
 } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
 import { LoginInfos, User, Vegetable } from '@/models/models';
-import { Failure, Success } from '@jaslay/http';
+import { Failure, ResAction, Success } from '@jaslay/http';
 import { GardenService } from '@/services/garden.service';
 
 //Here we call the services and the actions from the store
@@ -97,7 +97,14 @@ export class UserUseCases {
     return response.status;
   }
 
-  public removeGardenVegetable(vegetable: Vegetable): void {
-    this.actions.userActions.removeGardenVegetable(vegetable);
+  public async removeGardenVegetable(
+    vegetableId: string
+  ): Promise<'Success' | 'Failure'> {
+    const response =
+      await this.gardenService.removeVegetableToGarden(vegetableId);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    return response.status;
   }
 }
