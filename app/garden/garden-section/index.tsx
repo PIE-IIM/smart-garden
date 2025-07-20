@@ -46,6 +46,11 @@ export default function GardenSection({ gardenVegetablesProps }: GardenSectionPr
         hide()
     }
 
+    const moveToDetails = (vegetableId: string) => {
+        router.push(`/vegetable-details/${vegetableId}`)
+        hide()
+    }
+
 
     return (
         <>
@@ -53,7 +58,11 @@ export default function GardenSection({ gardenVegetablesProps }: GardenSectionPr
                 {gardenVegetablesProps?.length > 0 && (
                     <VegetablesGardenList>
                         {gardenVegetablesProps.map((vegetable, index) => (
-                            <VegetableCardGarden key={index} vegetableProps={vegetable} callback={() => openBottomSheet(vegetable.gardenVegetableId)} />
+                            <VegetableCardGarden key={index}
+                                label={vegetable.name} image={{ uri: vegetable.images[0] }}
+                                onLongPressCallback={() => openBottomSheet(vegetable.gardenVegetableId)}
+                                callback={() => moveToDetails(vegetable.id)}
+                            />
                         ))}
                     </VegetablesGardenList>
                 )}
