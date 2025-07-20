@@ -12,6 +12,10 @@ type GardenSectionPropsType = {
 
 export default function GardenSection({ gardenVegetablesProps }: GardenSectionPropsType) {
 
+    const openBottomSheet = (vegetable: Vegetable) => {
+
+    }
+
 
     return (
         <>
@@ -19,7 +23,7 @@ export default function GardenSection({ gardenVegetablesProps }: GardenSectionPr
                 {gardenVegetablesProps?.length > 0 && (
                     <VegetablesGardenList>
                         {gardenVegetablesProps.map((vegetable, index) => (
-                            <VegetableCardGarden key={index} vegetableProps={vegetable} />
+                            <VegetableCardGarden key={index} vegetableProps={vegetable} callback={() => openBottomSheet(vegetable)} />
                         ))}
                     </VegetablesGardenList>
                 )}
@@ -52,5 +56,5 @@ const styles = StyleSheet.create({
     addVegetableText: {
         fontSize: 18,
         textAlign: "center"
-    }
+    },
 });
