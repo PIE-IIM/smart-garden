@@ -1,13 +1,11 @@
-import { User, Vegetable } from '@/models/models';
+import { GardenVegetable, User, Vegetable } from '@/models/models';
 import {
   addVegetables,
   GardenState,
   removeVegetable,
 } from '../reducers/gardenSlice';
 import { setLogin, setUser, UserState } from '../reducers/userSlice';
-import { VegetablesState } from '../reducers/vegetablesSlice';
 import { AppDispatch } from '../store';
-import { VegetablesActions } from './vegetables.actions';
 
 export class UserActions {
   constructor(
@@ -26,7 +24,7 @@ export class UserActions {
     }
   }
 
-  public get gardenVegetables(): Vegetable[] {
+  public get gardenVegetables(): GardenVegetable[] {
     return this.gardenState.vegetables;
   }
 
@@ -38,7 +36,7 @@ export class UserActions {
     this.dispatch(setUser(response));
   }
 
-  public addGardenVegetables(vegetables: Vegetable[]) {
+  public addGardenVegetables(vegetables: GardenVegetable[]) {
     return this.dispatch(addVegetables(vegetables));
   }
 

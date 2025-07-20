@@ -4,9 +4,12 @@ import {
   UserService,
 } from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
-import { LoginInfos, User, Vegetable } from '@/models/models';
+import { GardenVegetable, LoginInfos, User, Vegetable } from '@/models/models';
 import { Failure, ResAction, Success } from '@jaslay/http';
-import { GardenService } from '@/services/garden.service';
+import {
+  AddVegetableToGardenResponse,
+  GardenService,
+} from '@/services/garden.service';
 
 //Here we call the services and the actions from the store
 export class UserUseCases {
@@ -20,7 +23,7 @@ export class UserUseCases {
     return this.actions.userActions.userIsLogin;
   }
 
-  public get gardenVegetables(): Vegetable[] {
+  public get gardenVegetables(): GardenVegetable[] {
     return this.actions.userActions.gardenVegetables;
   }
 
@@ -81,7 +84,7 @@ export class UserUseCases {
     if (response.status === 'Failure') {
       return response.status;
     }
-    const payload = response.payload as Vegetable[];
+    const payload = response.payload as GardenVegetable[];
     this.actions.userActions.addGardenVegetables(payload);
     return response.status;
   }
@@ -102,6 +105,7 @@ export class UserUseCases {
   ): Promise<'Success' | 'Failure'> {
     const response =
       await this.gardenService.removeVegetableToGarden(vegetableId);
+    console.log(response);
     if (response.status === 'Failure') {
       return response.status;
     }

@@ -11,7 +11,7 @@ import { useBottomSheet } from '@/app/contexts/bottomSheetContext';
 
 
 export const BottomSheet = () => {
-    const { isActive, hide } = useBottomSheet();
+    const { isActive, hide, content } = useBottomSheet();
 
     const config = {
         duration: 500,
@@ -41,6 +41,7 @@ export const BottomSheet = () => {
                 <TouchableOpacity onPress={() => closeBottomSheet()} style={styles.deleteIconContainer}>
                     <DeleteIcon style={styles.deleteIcon} />
                 </TouchableOpacity>
+                {content}
             </View>
         </Animated.View>
     );

@@ -1,9 +1,9 @@
 // store/reducers/userSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Vegetable } from '@/models/models';
+import { GardenVegetable, Vegetable } from '@/models/models';
 
 export interface GardenState {
-  vegetables: Vegetable[];
+  vegetables: GardenVegetable[];
 }
 
 const initialState: GardenState = {
@@ -14,7 +14,7 @@ const gardenSlice = createSlice({
   name: 'garden',
   initialState,
   reducers: {
-    addVegetables: (state, action: PayloadAction<Vegetable[]>) => {
+    addVegetables: (state, action: PayloadAction<GardenVegetable[]>) => {
       state.vegetables = action.payload;
     },
     removeVegetable: (state, action: PayloadAction<Vegetable>) => {

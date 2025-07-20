@@ -4,7 +4,10 @@ export type AddVegetableToGardenPayload = {
   vegetableId: string;
 };
 
-//Here we use http service and we interact with APIs
+export type AddVegetableToGardenResponse = {
+  gardenVegetableId: string;
+};
+
 export class GardenService {
   constructor(private quickHttp: QuickHttp) {}
 
