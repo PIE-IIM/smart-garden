@@ -12,11 +12,6 @@ export default function AddVegetable() {
     const { gatewayUseCase } = useUseCase();
     const [error, setError] = useState<string | null>(null);
 
-    const getVegetables = async () => {
-        const vegetables = await gatewayUseCase.vegetablesUseCases.getAllVegetables();
-        setVegetables(vegetables);
-    }
-
     const loadGardenVegetables = async () => {
         const response = await gatewayUseCase.userUseCases.loadGardenVegetables();
         if (response === "Failure") {
@@ -38,8 +33,10 @@ export default function AddVegetable() {
     }
 
     useEffect(() => {
-        getVegetables()
-    }, [])
+        if (gatewayUseCase.vegetablesUseCases.getAllVegetables.length > 0) {
+            setVegetables(gatewayUseCase.vegetablesUseCases.getAllVegetables);
+        }
+    }, [gatewayUseCase.vegetablesUseCases.getAllVegetables])
 
     return (
         <>

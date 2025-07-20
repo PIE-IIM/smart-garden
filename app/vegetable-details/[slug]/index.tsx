@@ -15,7 +15,7 @@ export default function VegetableDetails() {
     const { gatewayUseCase } = useUseCase();
 
     const getVegetable = (name: string): Vegetable | undefined => {
-        const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables().find((vegetable) => vegetable.name === name);
+        const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables.find((vegetable) => vegetable.name === name);
         if (!vegetable) {
             return undefined;
         }
@@ -27,7 +27,7 @@ export default function VegetableDetails() {
     }
 
     useEffect(() => {
-        const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables().find((vegetable => vegetable.id === slug));
+        const vegetable = gatewayUseCase.vegetablesUseCases.getAllVegetables.find((vegetable => vegetable.id === slug));
         setCurrentVegetable(vegetable);
     }, [])
 

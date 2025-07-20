@@ -4,7 +4,10 @@ export type AddVegetableToGardenPayload = {
   vegetableId: string;
 };
 
-//Here we use http service and we interact with APIs
+export type AddVegetableToGardenResponse = {
+  gardenVegetableId: string;
+};
+
 export class GardenService {
   constructor(private quickHttp: QuickHttp) {}
 
@@ -17,6 +20,11 @@ export class GardenService {
     payload: AddVegetableToGardenPayload
   ): Promise<ResAction> {
     const response = await this.quickHttp.post('/api/user/vegetable', payload);
+    return response;
+  }
+
+  async removeVegetableToGarden(id: string): Promise<ResAction> {
+    const response = await this.quickHttp.delete(`/api/user/vegetable/${id}`);
     return response;
   }
 }

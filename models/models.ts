@@ -6,7 +6,7 @@ export type User = {
 };
 
 export type Vegetable = {
-  id?: string;
+  id: string;
   name: string;
   description: string;
   specifications: string[];
@@ -17,6 +17,10 @@ export type Vegetable = {
   bad_neighbors: string[];
   images: string[];
 };
+
+export interface GardenVegetable extends Vegetable {
+  gardenVegetableId: string;
+}
 
 export type LoginInfos = {
   token: string;

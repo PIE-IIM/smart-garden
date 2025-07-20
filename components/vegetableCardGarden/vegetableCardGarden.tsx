@@ -1,18 +1,20 @@
 import { Vegetable } from '@/models/models';
 import { router } from 'expo-router';
-import { useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Text } from 'react-native';
 
 type VegetableCardGardenPropsType = {
-    vegetableProps: Vegetable
+    vegetableProps: Vegetable,
+    callback: () => void
 }
 
-export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenPropsType) => {
+export const VegetableCardGarden = ({ vegetableProps, callback }: VegetableCardGardenPropsType) => {
 
     return (
         <>
-            <TouchableOpacity onPress={() => router.push(`/vegetable-details/${vegetableProps.id}`)} style={styles.container}>
+            <TouchableOpacity style={styles.container}
+                onPress={() => router.push(`/vegetable-details/${vegetableProps.id}`)}
+                onLongPress={() => callback()}>
                 <Image source={{ uri: vegetableProps.images[0] }}
                     style={styles.vegetableImage} />
                 <View style={styles.vegetableDescriptionContainer}>
@@ -25,7 +27,7 @@ export const VegetableCardGarden = ({ vegetableProps }: VegetableCardGardenProps
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
+        width: "auto",
         height: 150,
         backgroundColor: '#EBECD2',
         borderRadius: 16,

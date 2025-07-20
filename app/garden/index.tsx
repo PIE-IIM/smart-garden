@@ -2,7 +2,7 @@ import { Planning } from "@/components/planning/planning";
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
 import { useEffect, useState } from "react";
-import { Vegetable } from "@/models/models";
+import { GardenVegetable, Vegetable } from "@/models/models";
 import useUseCase from "@/hooks/useUseCase";
 import GardenSection from "./garden-section";
 import { Header } from "@/components/header/header";
@@ -10,7 +10,7 @@ import { Header } from "@/components/header/header";
 export default function Garden() {
 
   const [currentSection, setCurrentSection] = useState<string>('plantes');
-  const [gardenVegetables, setGardenVegetables] = useState<Vegetable[]>([]);
+  const [gardenVegetables, setGardenVegetables] = useState<GardenVegetable[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   const { gatewayUseCase } = useUseCase();

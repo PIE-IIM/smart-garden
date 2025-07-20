@@ -22,7 +22,7 @@ export class VegetablesUseCases {
     return response.status;
   }
 
-  getAllVegetables(): Vegetable[] {
+  get getAllVegetables(): Vegetable[] {
     return this.actions.vegetablesActions.getAllVegetables;
   }
 }

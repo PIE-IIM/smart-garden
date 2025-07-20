@@ -4,6 +4,9 @@ import { Navbar } from "@/components/navbar/navbar";
 import * as NavigationBar from "expo-navigation-bar";
 import { useEffect, useState } from "react";
 import { StorageActions } from "@/store/actions/storageActions";
+import { BottomSheet } from "@/components/bottomSheet/bottomSheet";
+import { Text } from "react-native";
+import { BottomSheetProvider } from "./contexts/bottomSheetContext";
 
 export default function RootLayout() {
 
@@ -33,15 +36,22 @@ export default function RootLayout() {
   }, []);
   return (
     <StoreProvider>
-      <>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="search" />
-          <Stack.Screen name="garden" />
-          <Stack.Screen name="profile" />
-        </Stack>
-        <Navbar />
-      </>
+      <BottomSheetProvider>
+        <>
+          <Stack screenOptions={{
+            headerShown: false,
+            animation: 'none',
+          }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen name="search" />
+            <Stack.Screen name="garden" />
+            <Stack.Screen name="profile" />
+          </Stack>
+
+          <Navbar />
+          <BottomSheet />
+        </>
+      </BottomSheetProvider>
     </StoreProvider >
   );
 }
