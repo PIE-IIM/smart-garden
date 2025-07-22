@@ -1,38 +1,114 @@
-import { UserServices } from '@/services/user.services';
+import {
+  CreateUserPayload,
+  LoginUserPayload,
+  UserService,
+} from '@/services/user.service';
 import { Actions } from '@/store/actions/actions';
-import { CreateUserRequest, Token, User } from '@/models/models';
-import { Failure, Success } from '@/utils';
+import { GardenVegetable, LoginInfos, User, Vegetable } from '@/models/models';
+import { Failure, ResAction, Success } from '@jaslay/http';
+import {
+  AddVegetableToGardenResponse,
+  GardenService,
+} from '@/services/garden.service';
 
 //Here we call the services and the actions from the store
 export class UserUseCases {
   constructor(
     private actions: Actions,
-    private userServices: UserServices
+    private userService: UserService,
+    private gardenService: GardenService
   ) {}
 
-  async createUser(userData: CreateUserRequest): Promise<Success | Failure> {
-    this.actions.userActions.setLoadingAction(true);
-    this.actions.userActions.setErrorAction(null);
+  public get isLogin(): boolean {
+    return this.actions.userActions.userIsLogin;
+  }
 
-    const response = await this.userServices.createUser(userData);
+  public get gardenVegetables(): GardenVegetable[] {
+    return this.actions.userActions.gardenVegetables;
+  }
 
+  public get user(): User | void {
+    return this.actions.userActions.user;
+  }
+
+  async createUser(userData: CreateUserPayload): Promise<Success | Failure> {
+    const response = await this.userService.createUser(userData);
     if (response.status === 'Failure') {
       return response.status;
     }
-
-    const payload = response.payload as unknown as Token;
+    const payload = response.payload as unknown as LoginInfos;
     this.actions.storageActions.putToken('authToken', payload.token);
-
-    // this.actions.userActions.addUserAction(newUser);
-    // this.actions.userActions.setCurrentUserAction(newUser);
+    this.actions.userActions.setLoginAction(true);
     return response.status;
   }
 
-  async userIsConnected(): Promise<boolean> {
-    const token = await this.actions.storageActions.getToken('authToken');
+  async login(userData: LoginUserPayload): Promise<Success | Failure> {
+    const response = await this.userService.login(userData);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    const payload = response.payload as unknown as LoginInfos;
+
+    //check if the user's token already exists, if so, delete it
+    const isTokenAlreadyExists =
+      await this.actions.storageActions.getToken('authToken');
+    if (isTokenAlreadyExists === null) {
+      this.actions.storageActions.deleteToken('authToken');
+    }
+    await this.actions.storageActions.putToken('authToken', payload.token);
+    this.actions.userActions.setLoginAction(true);
+    const userInfos: User = {
+      name: payload.userName,
+      email: payload.email,
+    };
+    this.actions.userActions.setUserAction(userInfos);
+    return response.status;
+  }
+
+  async logout(): Promise<Success> {
+    await this.actions.storageActions.deleteToken('authToken');
+    this.actions.userActions.setLoginAction(false);
+    return 'Success';
+  }
+
+  async userHasToken(): Promise<boolean> {
+    const token = this.actions.storageActions.getToken('authToken');
     if (token === null) {
       return false;
     }
     return true;
+  }
+
+  public async loadGardenVegetables(): Promise<Success | Failure> {
+    const response = await this.gardenService.getGardenVegetables();
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    const payload = response.payload as GardenVegetable[];
+    this.actions.userActions.addGardenVegetables(payload);
+    return response.status;
+  }
+
+  public async putVegetableToGarden(vegetableId: string) {
+    const payload = {
+      vegetableId: vegetableId,
+    };
+    const response = await this.gardenService.addVegetableToGarden(payload);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    return response.status;
+  }
+
+  public async removeGardenVegetable(
+    vegetableId: string
+  ): Promise<'Success' | 'Failure'> {
+    const response =
+      await this.gardenService.removeVegetableToGarden(vegetableId);
+    console.log(response);
+    if (response.status === 'Failure') {
+      return response.status;
+    }
+    return response.status;
   }
 }

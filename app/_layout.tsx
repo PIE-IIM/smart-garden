@@ -3,14 +3,17 @@ import StoreProvider from "./StoreProvider";
 import { Navbar } from "@/components/navbar/navbar";
 import * as NavigationBar from "expo-navigation-bar";
 import { useEffect, useState } from "react";
-import useUseCase from "@/hooks/useUseCase";
 import { StorageActions } from "@/store/actions/storageActions";
+import { BottomSheet } from "@/components/bottomSheet/bottomSheet";
+import { Text } from "react-native";
+import { BottomSheetProvider } from "./contexts/bottomSheetContext";
 
 export default function RootLayout() {
 
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
   const router = useRouter();
   const storageActions = new StorageActions
+
   const userIsConnected: () => Promise<void> = async () => {
     const token = await storageActions.getToken('authToken'); //I don't call usecase architecture because layout is not wrap by Provider
     if (token === null) {
@@ -33,15 +36,22 @@ export default function RootLayout() {
   }, []);
   return (
     <StoreProvider>
-      <>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="search" />
-          <Stack.Screen name="garden" />
-          <Stack.Screen name="profile" />
-        </Stack>
-        <Navbar />
-      </>
-    </StoreProvider>
+      <BottomSheetProvider>
+        <>
+          <Stack screenOptions={{
+            headerShown: false,
+            animation: 'none',
+          }}>
+            <Stack.Screen name="index" />
+            <Stack.Screen name="search" />
+            <Stack.Screen name="garden" />
+            <Stack.Screen name="profile" />
+          </Stack>
+
+          <Navbar />
+          <BottomSheet />
+        </>
+      </BottomSheetProvider>
+    </StoreProvider >
   );
 }

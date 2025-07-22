@@ -3,14 +3,19 @@ import Home from '../../assets/icons/home.svg';
 import Garden from '../../assets/icons/garden.svg';
 import Profile from '../../assets/icons/profil.svg';
 import Search from '../../assets/icons/search.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { router } from 'expo-router';
+import useUseCase from '@/hooks/useUseCase';
 
 export const Navbar = () => {
   const [iconSelected, setIconSelected] = useState<string>('home');
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
+
+  const { gatewayUseCase } = useUseCase();
 
   const iconPath: Record<string, string> = {
-    home: '/',
+    home: '/home',
     search: '/search',
     garden: '/garden',
     profile: '/profile',
@@ -24,83 +29,107 @@ export const Navbar = () => {
     }
   };
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    setIconSelected('home')
+    if (gatewayUseCase.userUseCases.isLogin && isMounted) {
+      setIsLogin(true)
+    }
+    if (!gatewayUseCase.userUseCases.isLogin && isMounted) {
+      setIsLogin(false)
+    }
+  }, [gatewayUseCase.userUseCases.isLogin, isMounted])
+
+  useEffect(() => {
+    if (!isLogin && isMounted) {
+      router.replace('/login')
+    }
+  }, [isLogin, isMounted])
+
   return (
     <>
       <View style={styles.container}>
-        <TouchableOpacity
-          onPress={() => selectIcon('home')}
-          style={styles.iconContainer}
-        >
-          <View style={iconSelected === 'home' ? styles.bar : styles.hide} />
-          <Home
-            style={styles.icon}
-            width={28}
-            height={28}
-            opacity={iconSelected === 'home' ? 1 : 0.6}
-          />
-          <Text
-            style={iconSelected === 'home' ? styles.textSelected : styles.text}
-          >
-            Home
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectIcon('search')}
-          style={styles.iconContainer}
-        >
-          <View style={iconSelected === 'search' ? styles.bar : styles.hide} />
-          <Search
-            style={styles.icon}
-            width={28}
-            height={28}
-            opacity={iconSelected === 'search' ? 1 : 0.6}
-          />
-          <Text
-            style={
-              iconSelected === 'search' ? styles.textSelected : styles.text
-            }
-          >
-            Search
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectIcon('garden')}
-          style={styles.iconContainer}
-        >
-          <View style={iconSelected === 'garden' ? styles.bar : styles.hide} />
-          <Garden
-            style={styles.icon}
-            width={28}
-            height={28}
-            opacity={iconSelected === 'garden' ? 1 : 0.6}
-          />
-          <Text
-            style={
-              iconSelected === 'garden' ? styles.textSelected : styles.text
-            }
-          >
-            Garden
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => selectIcon('profile')}
-          style={styles.iconContainer}
-        >
-          <View style={iconSelected === 'profile' ? styles.bar : styles.hide} />
-          <Profile
-            style={styles.icon}
-            width={28}
-            height={28}
-            opacity={iconSelected === 'profile' ? 1 : 0.6}
-          />
-          <Text
-            style={
-              iconSelected === 'profile' ? styles.textSelected : styles.text
-            }
-          >
-            Profile
-          </Text>
-        </TouchableOpacity>
+        {isLogin &&
+          <>
+            <TouchableOpacity
+              onPress={() => selectIcon('home')}
+              style={styles.iconContainer}
+            >
+              <View style={iconSelected === 'home' ? styles.bar : styles.hide} />
+              <Home
+                style={styles.icon}
+                width={28}
+                height={28}
+                opacity={iconSelected === 'home' ? 1 : 0.6}
+              />
+              <Text
+                style={iconSelected === 'home' ? styles.textSelected : styles.text}
+              >
+                Accueil
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectIcon('search')}
+              style={styles.iconContainer}
+            >
+              <View style={iconSelected === 'search' ? styles.bar : styles.hide} />
+              <Search
+                style={styles.icon}
+                width={28}
+                height={28}
+                opacity={iconSelected === 'search' ? 1 : 0.6}
+              />
+              <Text
+                style={
+                  iconSelected === 'search' ? styles.textSelected : styles.text
+                }
+              >
+                Recherche
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectIcon('garden')}
+              style={styles.iconContainer}
+            >
+              <View style={iconSelected === 'garden' ? styles.bar : styles.hide} />
+              <Garden
+                style={styles.icon}
+                width={28}
+                height={28}
+                opacity={iconSelected === 'garden' ? 1 : 0.6}
+              />
+              <Text
+                style={
+                  iconSelected === 'garden' ? styles.textSelected : styles.text
+                }
+              >
+                Potager
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectIcon('profile')}
+              style={styles.iconContainer}
+            >
+              <View style={iconSelected === 'profile' ? styles.bar : styles.hide} />
+              <Profile
+                style={styles.icon}
+                width={28}
+                height={28}
+                opacity={iconSelected === 'profile' ? 1 : 0.6}
+              />
+              <Text
+                style={
+                  iconSelected === 'profile' ? styles.textSelected : styles.text
+                }
+              >
+                Profil
+              </Text>
+            </TouchableOpacity>
+          </>
+        }
       </View>
     </>
   );
@@ -108,7 +137,6 @@ export const Navbar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'fixed',
     bottom: 0,
     width: '100%',
     backgroundColor: 'white',

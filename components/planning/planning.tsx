@@ -1,4 +1,4 @@
-import { View, StyleSheet, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 import { Vegetable } from "@/models/models";
 
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
   },
   vegetableLabelContainer: {
     width: 100,
-    position: "fixed",
     left: 0,
     top: 0,
     height: "100%",

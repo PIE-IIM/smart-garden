@@ -1,10 +1,9 @@
-// app/register/index.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { router } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
-import { CreateUserRequest } from '@/models/models';
-import { Failure, Success } from '@/utils';
+import { CreateUserPayload } from '@/services/user.service';
+import { Failure, Success } from '@jaslay/http';
 
 export default function RegisterScreen() {
     const [name, setName] = useState<string>('');
@@ -39,7 +38,7 @@ export default function RegisterScreen() {
     const handleRegister = async () => {
         setLoading(true)
         if (!validateForm()) return setLoading(false);
-        const userData: CreateUserRequest = {
+        const userData: CreateUserPayload = {
             name,
             email,
             password
@@ -63,7 +62,7 @@ export default function RegisterScreen() {
             )}
 
             <TextInput style={styles.input}
-                placeholder="Nom"
+                placeholder="Nom d'utilisateur"
                 value={name}
                 onChangeText={setName} />
 
@@ -102,7 +101,7 @@ export default function RegisterScreen() {
 
             <TouchableOpacity
                 style={styles.linkButton}
-                onPress={() => router.back()}>
+                onPress={() => router.replace('/login')}>
                 <Text style={styles.linkText}>Retour</Text>
             </TouchableOpacity>
         </View>

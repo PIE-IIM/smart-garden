@@ -1,27 +1,46 @@
-// store/actions/userActions.ts
-import { addUser, setCurrentUser, setError, setLoading } from "../reducers/userSlice";
-import { useAppDispatch } from "../hooks";
-import { AppDispatch } from "../store";
-import { User } from "@/models/models";
+import { GardenVegetable, User, Vegetable } from '@/models/models';
+import {
+  addVegetables,
+  GardenState,
+  removeVegetable,
+} from '../reducers/gardenSlice';
+import { setLogin, setUser, UserState } from '../reducers/userSlice';
+import { AppDispatch } from '../store';
 
 export class UserActions {
-    constructor(
-        private dispatch: AppDispatch
-    ) {}
+  constructor(
+    private dispatch: AppDispatch,
+    private userState: UserState,
+    private gardenState: GardenState
+  ) {}
 
-    public setLoadingAction(loading: boolean) {
-        this.dispatch(setLoading(loading));
-    }
+  public get userIsLogin(): boolean {
+    return this.userState.isLogin;
+  }
 
-    public setErrorAction(error: string | null) {
-        this.dispatch(setError(error));
+  public get user(): User | void {
+    if (this.userState.currentUser) {
+      return this.userState?.currentUser;
     }
+  }
 
-    public addUserAction(user: User) {
-        this.dispatch(addUser(user));
-    }
+  public get gardenVegetables(): GardenVegetable[] {
+    return this.gardenState.vegetables;
+  }
 
-    public setCurrentUserAction(user: User | null) {
-        this.dispatch(setCurrentUser(user));
-    }
+  public setLoginAction(response: boolean) {
+    this.dispatch(setLogin(response));
+  }
+
+  public setUserAction(response: User) {
+    this.dispatch(setUser(response));
+  }
+
+  public addGardenVegetables(vegetables: GardenVegetable[]) {
+    return this.dispatch(addVegetables(vegetables));
+  }
+
+  public removeGardenVegetable(vegetable: Vegetable) {
+    return this.dispatch(removeVegetable(vegetable));
+  }
 }

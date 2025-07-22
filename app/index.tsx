@@ -1,45 +1,21 @@
-// app/index.tsx (mise à jour)
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'expo-router';
 import useUseCase from '@/hooks/useUseCase';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
 
 export default function Index() {
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Smart Garden</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => console.log('hello')}>
-        <Text style={styles.buttonText}>Créer un compte</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+  const { gatewayUseCase } = useUseCase();
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-  },
-  button: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 8,
-    marginVertical: 10,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+  const checkToken = async () => {
+    const hasToken = await gatewayUseCase.userUseCases.isLogin;
+    if (hasToken) {
+      router.replace('/home');
+    } else {
+      router.replace('/login');
+    }
+  };
+
+  useEffect(() => {
+    checkToken();
+  }, []);
+}

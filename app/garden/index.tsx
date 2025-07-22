@@ -1,27 +1,54 @@
 import { Planning } from "@/components/planning/planning";
 import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
-import { vegetablesFixture } from "@/vegetables";
 import { NavBarGardenSection } from "@/components/navGardenSection/navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { GardenVegetable, Vegetable } from "@/models/models";
+import useUseCase from "@/hooks/useUseCase";
+import GardenSection from "./garden-section";
+import { Header } from "@/components/header/header";
 
 export default function Garden() {
 
-  const [currentSection, setCurrentSection] = useState<string>('calendrier');
+  const [currentSection, setCurrentSection] = useState<string>('plantes');
+  const [gardenVegetables, setGardenVegetables] = useState<GardenVegetable[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const { gatewayUseCase } = useUseCase();
+
+  const loadGardenVegetables = async () => {
+    const response = await gatewayUseCase.userUseCases.loadGardenVegetables();
+    if (response === "Failure") {
+      setError('Erreur de chargement');
+    }
+  }
+
+  useEffect(() => {
+    loadGardenVegetables()
+  }, [])
+
+  useEffect(() => {
+    if (gatewayUseCase.userUseCases.gardenVegetables) {
+      setGardenVegetables(gatewayUseCase.userUseCases.gardenVegetables)
+    }
+  }, [gatewayUseCase.userUseCases.gardenVegetables])
 
   return (
     <>
       <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Mon jardin</Text>
+        <View>
+          <Header title={"Mon potager"} />
           <NavBarGardenSection currentSectionProps={currentSection} setCurrentSectionProps={setCurrentSection} />
         </View>
-        <ScrollView>
+        <ScrollView style={styles.scrollViewContainer}>
+          {error && (
+            <Text style={styles.error}>{error}</Text>
+          )}
+          {currentSection === 'plantes' && (
+            <GardenSection gardenVegetablesProps={gardenVegetables} />
+          )}
           {currentSection === 'calendrier' && (
             <>
-              <Planning vegetablesOnPlanning={vegetablesFixture} />
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.addVegetableText}>Ajouter une plante</Text>
-              </TouchableOpacity>
+              <Planning vegetablesOnPlanning={gardenVegetables} />
             </>
           )}
         </ScrollView>
@@ -34,33 +61,19 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    paddingTop: "15%",
+    gap: 16,
     backgroundColor: "#FFFDF0",
-    paddingTop: "15%"
   },
-  header: {
-    paddingBottom: 16
+  scrollViewContainer: {
+    width: '100%',
   },
-  title: {
-    fontSize: 22,
-    textAlign: "left",
+  error: {
+    fontSize: 18,
+    textAlign: "center",
     width: "85%",
     marginBottom: 16,
-    fontWeight: 500
+    fontWeight: 500,
+    color: "red",
   },
-  button: {
-    width: "85%",
-    paddingTop: 16,
-    paddingBottom: 16,
-    color: "#345624",
-    borderWidth: 1,
-    borderRadius: 8,
-    marginTop: 50,
-    marginBottom: 50,
-    marginLeft: "auto",
-    marginRight: "auto"
-  },
-  addVegetableText: {
-    fontSize: 18,
-    textAlign: "center"
-  }
 });
