@@ -12,19 +12,15 @@ import { VegetablesService } from '@/services/vegetables.service';
 
 const extra = Constants.expoConfig?.extra as {
   apiBaseUrl?: string;
-  port?: string;
 };
 
 const useUseCase = () => {
   const storageActions = new StorageActions();
 
-  const quickHttp = new QuickHttp(
-    `${extra?.apiBaseUrl ?? ''}${extra?.port ?? ''}`,
-    {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${storageActions.getToken('authToken')}`,
-    }
-  );
+  const quickHttp = new QuickHttp(`${extra?.apiBaseUrl ?? ''}`, {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${storageActions.getToken('authToken')}`,
+  });
   const actions = new Actions(useAppDispatch(), {
     userState: useAppSelector((state) => state.userSliceReducer),
     gardenState: useAppSelector((state) => state.gardenSliceRecucer),
