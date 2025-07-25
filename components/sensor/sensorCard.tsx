@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         height: 'auto',
         backgroundColor: '#D1EFE7',
         borderRadius: 16,
-        padding: 16,
+        padding: 8,
         gap: 16
     },
     sensorName: {
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     measure: {
         flex: 1,
         height: 64,
-        borderRadius: 8,
+        borderRadius: 16,
         backgroundColor: 'white',
         padding: 8,
         display: 'flex',
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     measureLabel: {
         marginTop: 'auto',
         marginBottom: 'auto',
-        fontSize: 22,
+        fontSize: 20,
         fontWeight: 400
     }
 });

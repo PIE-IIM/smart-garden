@@ -6,6 +6,7 @@ import { GardenVegetable, Vegetable } from "@/models/models";
 import useUseCase from "@/hooks/useUseCase";
 import GardenSection from "./garden-section";
 import { Header } from "@/components/header/header";
+import { SensorCard } from "@/components/sensor/sensorCard";
 
 export default function Garden() {
 
@@ -32,6 +33,19 @@ export default function Garden() {
     }
   }, [gatewayUseCase.userUseCases.gardenVegetables])
 
+  const fakeMeasures = [
+    {
+      temperature: '25°',
+      luminosity: '71%',
+      humidity: '50%',
+    },
+    {
+      temperature: '32°',
+      luminosity: '75%',
+      humidity: '40%',
+    }
+  ]
+
   return (
     <>
       <View style={styles.container}>
@@ -50,6 +64,12 @@ export default function Garden() {
             <>
               <Planning vegetablesOnPlanning={gardenVegetables} />
             </>
+          )}
+          {currentSection === 'capteurs' && (
+            <View style={styles.sensorsContainer}>
+              <SensorCard name='Capteur 1' measures={fakeMeasures[0]} />
+              <SensorCard name='Capteur 2' measures={fakeMeasures[1]} />
+            </View>
           )}
         </ScrollView>
       </View>
@@ -76,4 +96,10 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: "red",
   },
+  sensorsContainer: {
+    width: "90%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    gap: 16
+  }
 });

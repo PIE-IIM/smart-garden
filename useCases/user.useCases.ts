@@ -48,11 +48,11 @@ export class UserUseCases {
       return response.status;
     }
     const payload = response.payload as unknown as LoginInfos;
-
     //check if the user's token already exists, if so, delete it
     const isTokenAlreadyExists =
       await this.actions.storageActions.getToken('authToken');
-    if (isTokenAlreadyExists === null) {
+
+    if (isTokenAlreadyExists !== null) {
       this.actions.storageActions.deleteToken('authToken');
     }
     await this.actions.storageActions.putToken('authToken', payload.token);
@@ -105,7 +105,6 @@ export class UserUseCases {
   ): Promise<'Success' | 'Failure'> {
     const response =
       await this.gardenService.removeVegetableToGarden(vegetableId);
-    console.log(response);
     if (response.status === 'Failure') {
       return response.status;
     }
