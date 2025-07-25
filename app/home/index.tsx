@@ -11,55 +11,64 @@ export default function Home() {
     const { gatewayUseCase } = useUseCase();
 
     const [user, setUser] = useState<User>();
+    const [sensorMeasures, setSensorMeasures] = useState([
+        { temperature: '--', luminosity: '--', humidity: '--' },
+        { temperature: '--', luminosity: '--', humidity: '--' }
+    ]);
 
     const loadInit = async () => {
         await gatewayUseCase.vegetablesUseCases.loadAllVegetables();
     }
 
     const loadGardenVegetables = async () => {
-        const response = await gatewayUseCase.userUseCases.loadGardenVegetables();
+        await gatewayUseCase.userUseCases.loadGardenVegetables();
     }
 
     useEffect(() => {
         loadGardenVegetables()
-        loadGardenVegetables()
-    }, [])
-
-
-    const fakeMeasures = [
-        {
-            temperature: '25°',
-            luminosity: '71%',
-            humidity: '50%',
-        },
-        {
-            temperature: '32°',
-            luminosity: '75%',
-            humidity: '40%',
-        }
-    ]
-
-    useEffect(() => {
         loadInit()
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (gatewayUseCase.userUseCases.user) {
             setUser(gatewayUseCase.userUseCases.user)
         }
-    }, [gatewayUseCase.userUseCases.user])
+    }, [gatewayUseCase.userUseCases.user]);
+
+    useEffect(() => {
+        const fetchSensorData = async () => {
+            try {
+                const response = await fetch('http://http://10.2.104.34:3000/sensorData');
+                const data = await response.json();
+
+                const formatted = {
+                    temperature: data.temperature !== null ? `${data.temperature}°` : '--',
+                    luminosity: data.pourcentage_luminosite !== null ? `${data.pourcentage_luminosite}%` : '--',
+                    humidity: data.humidite !== null ? `${data.humidite}%` : '--',
+                };
+
+                setSensorMeasures([formatted, formatted]);
+            } catch (err) {
+                console.error('Erreur lors du fetch des capteurs :', err);
+            }
+        };
+
+        fetchSensorData();
+    }, []);
+
     return (
         <View style={styles.container}>
             <Header title={`Bonjour ${user?.name}`} />
             <VegetableCardGarden
-                label="Mon potager" image={require('../../assets/images/garden.jpg')}
+                label="Mon potager"
+                image={require('../../assets/images/garden.jpg')}
                 subLabel={`${gatewayUseCase.userUseCases.gardenVegetables.length.toString()} plantes`}
                 onLongPressCallback={() => () => console.log("hello")}
                 callback={() => router.push('/garden')}
             />
             <Text style={styles.subtitle}>Tableau de bord</Text>
-            <SensorCard name='Capteur 1' measures={fakeMeasures[0]} />
-            <SensorCard name='Capteur 2' measures={fakeMeasures[1]} />
+            <SensorCard name='Capteur 1' measures={sensorMeasures[0]} />
+            <SensorCard name='Capteur 2' measures={sensorMeasures[1]} />
         </View>
     );
 }
